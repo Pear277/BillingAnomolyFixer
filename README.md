@@ -20,3 +20,35 @@ A modular, agent-powered platform to detect and resolve anomalies in utility bil
 | Backend              | Python, FastAPI                                    |
 | Frontend             | React                                              |
 | Memory / Storage     | SQLite, JSON, CSV                                  |
+
+## Project Structure
+
+.
+├── backend/
+│   ├── agents/
+│   ├── tools/
+│   ├── data/
+│   └── main.py
+├── frontend/
+│   └── anomaly-review-ui/
+├── docs/
+│   └── architecture.md
+├── README.md
+
+## Setup
+
+### Backend
+
+```bash
+cd backend
+pip install -r requirements.txt
+uvicorn main:app --reload
+```
+
+### Frontend
+
+```bash
+cd frontend/anomaly-review-ui
+npm install
+npm start
+```
