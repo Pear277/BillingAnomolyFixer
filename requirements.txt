@@ -1,0 +1,12 @@
+fastapi
+uvicorn
+langchain
+crewai
+chromadb
+sentence-transformers
+sqlite-utils
+pandas
+numpy
+scikit-learn
+openai
+python-dotenv
