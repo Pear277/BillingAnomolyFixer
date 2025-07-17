@@ -21,19 +21,6 @@ A modular, agent-powered platform to detect and resolve anomalies in utility bil
 | Frontend             | React                                              |
 | Memory / Storage     | SQLite, JSON, CSV                                  |
 
-## Project Structure
-
-.
-├── backend/
-│   ├── agents/
-│   ├── tools/
-│   ├── data/
-│   └── main.py
-├── frontend/
-│   └── anomaly-review-ui/
-├── docs/
-│   └── architecture.md
-├── README.md
 
 ## Setup
 
