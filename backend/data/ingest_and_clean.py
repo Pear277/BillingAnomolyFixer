@@ -6,9 +6,21 @@ def load_billing_data(filepath):
     return df
 
 # Standardize date formats to YYYY-MM-DD
+
+def robust_parse_date(val):
+    import pandas as pd
+    # Try parsing with dayfirst True
+    dt = pd.to_datetime(val, errors='coerce', dayfirst=True)
+    if pd.isnull(dt):
+        # Try parsing with dayfirst False
+        dt = pd.to_datetime(val, errors='coerce', dayfirst=False)
+    if pd.isnull(dt):
+        return ''  # or return val to keep original if unparseable
+    return dt.strftime('%d-%m-%Y')
+
 def standardize_dates(df, date_columns):
     for col in date_columns:
-        df[col] = pd.to_datetime(df[col], errors='coerce', dayfirst=True).dt.strftime('%Y-%m-%d')
+        df[col] = df[col].apply(robust_parse_date)
     return df
 
 # Ensure numeric consistency: usage as int, others as float (2 decimal places)
