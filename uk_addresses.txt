@@ -1,0 +1,58 @@
+15 Banbury Road, Oxford, OX2 6NN
+42 High Street, Woodstock, OX20 1TG
+8 Market Square, Witney, OX28 6BB
+23 Cornmarket Street, Oxford, OX1 3HA
+56 Cowley Road, Oxford, OX4 1JB
+12 Broad Street, Abingdon, OX14 3LH
+7 Queen Street, Bicester, OX26 2NY
+19 Castle Street, Wallingford, OX10 8DL
+31 Sheep Street, Chipping Norton, OX7 5EJ
+5 Hart Street, Henley-on-Thames, RG9 2AR
+67 Commercial Road, Swindon, SN1 5NX
+24 Regent Street, Swindon, SN1 1JQ
+9 Wood Street, Chippenham, SN15 3EY
+38 High Street, Marlborough, SN8 1HQ
+11 Market Place, Devizes, SN10 1HT
+27 The Parade, Trowbridge, BA14 8JY
+14 Silver Street, Bradford-on-Avon, BA15 1JX
+6 Fore Street, Warminster, BA12 9AJ
+22 Castle Street, Salisbury, SP1 3UD
+45 High Street, Cirencester, GL7 2NL
+18 Westgate Street, Gloucester, GL1 2NW
+33 Promenade, Cheltenham, GL50 1NW
+7 High Street, Tewkesbury, GL20 5AL
+29 Sheep Street, Stow-on-the-Wold, GL54 1AA
+10 Bridge Street, Stratford-upon-Avon, CV37 6AB
+41 Smith Street, Warwick, CV34 4JA
+16 Market Place, Rugby, CV21 3DU
+25 The Parade, Leamington Spa, CV32 4DW
+8 Market Square, Northampton, NN1 2DL
+37 Gold Street, Northampton, NN1 1RA
+13 Market Street, Wellingborough, NN8 1AP
+26 High Street, Kettering, NN16 8SP
+9 Market Place, Corby, NN17 1NJ
+52 High Street, Dunstable, LU6 1HY
+21 George Street, Luton, LU1 2AQ
+34 The Mall, Luton, LU1 2TW
+11 High Street North, Dunstable, LU6 1JX
+43 High Street, Leighton Buzzard, LU7 1EA
+17 Market Square, Aylesbury, HP20 1TN
+30 High Street, High Wycombe, HP11 2AZ
+5 Buckingham Street, Aylesbury, HP20 2NJ
+28 Frogmoor, High Wycombe, HP13 5DG
+14 Church Street, Slough, SL1 1PJ
+39 High Street, Windsor, SL4 1LN
+6 Peascod Street, Windsor, SL4 1DX
+22 King Street, Maidenhead, SL6 1EF
+47 High Street, Reading, RG1 2AA
+19 Broad Street, Reading, RG1 2BH
+8 Market Place, Newbury, RG14 5BD
+36 London Street, Basingstoke, RG21 7PG
+12 High Street, Winchester, SO23 9JX
+25 Above Bar Street, Southampton, SO14 7DX
+41 Commercial Road, Portsmouth, PO1 1BT
+15 East Street, Chichester, PO19 1HE
+33 North Street, Brighton, BN1 1RH
+7 Western Road, Hove, BN3 1AF
+20 South Street, Worthing, BN11 3AA
+44 High Street, Crawley, RH10 1BW
