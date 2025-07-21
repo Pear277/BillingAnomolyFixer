@@ -1,61 +1,85 @@
 import pandas as pd
 import numpy as np
-from sklearn.preprocessing import StandardScaler
-from sklearn.cluster import KMeans
 from sklearn.ensemble import IsolationForest
-import matplotlib.pyplot as plt
-import seaborn as sns
+from sklearn.cluster import KMeans
+from sklearn.preprocessing import StandardScaler
 
-# --- Load Data ---
+# Load and clean
 df = pd.read_csv("backend/data/cleaned_billing_data.csv")
 
-# --- Basic Cleanup ---
+# Basic cleanup
 df['fresh_water_usage'] = pd.to_numeric(df['fresh_water_usage'], errors='coerce')
 df['waste_water_usage'] = pd.to_numeric(df['waste_water_usage'], errors='coerce')
 df['latest_charges'] = pd.to_numeric(df['latest_charges'], errors='coerce')
+df['customer_id'] = df['account_number']  # ensure consistency
 
-df.fillna(0, inplace=True)
+# Create total water usage column
+df['total_water_usage'] = df['fresh_water_usage'] + df['waste_water_usage']
 
-# --- Feature Selection (NO total_water_usage) ---
-features = ['fresh_water_usage', 'waste_water_usage', 'latest_charges']
-X = df[features].copy()
+# Drop rows with missing core features
+df.dropna(subset=['total_water_usage', 'latest_charges'], inplace=True)
 
-# --- Standard Scaling ---
-scaler = StandardScaler()
-X_scaled = scaler.fit_transform(X)
+# Define features
+core_features = ['total_water_usage', 'latest_charges']
 
-# --- KMeans Clustering ---
-kmeans = KMeans(n_clusters=3, random_state=42)
-df['cluster'] = kmeans.fit_predict(X_scaled)
+# Split into high and low bill count groups
+bill_counts = df.groupby('customer_id').size()
+high_customers = bill_counts[bill_counts >= 3].index
+low_customers = bill_counts[bill_counts < 3].index
 
-# --- Isolation Forest per Cluster ---
-df['anomaly'] = 0  # Default: not anomaly
+# Collect scores and indexes for high customers
+high_scores = []
+high_indices = []
 
-for cluster in df['cluster'].unique():
-    cluster_idx = df[df['cluster'] == cluster].index
-    cluster_data = df.loc[cluster_idx, features]
-    
-    cluster_scaled = scaler.fit_transform(cluster_data)
-    iso = IsolationForest(n_estimators=100, contamination=0.05, random_state=42)
-    preds = iso.fit_predict(cluster_scaled)
-    
-    df.loc[cluster_idx, 'anomaly'] = preds
+for cust_id in high_customers:
+    cust_df = df[df['customer_id'] == cust_id]
+    X = cust_df[core_features]
+    if len(X) < 3:
+        continue
+    model = IsolationForest(n_estimators=100, contamination='auto', random_state=42)
+    model.fit(X)
+    scores = model.decision_function(X)  # Higher scores = normal, lower = anomaly
+    high_scores.extend(scores)
+    high_indices.extend(cust_df.index)
 
-df['anomaly_flag'] = df['anomaly'].map({1: 0, -1: 1})
+high_scores_df = pd.DataFrame({'index': high_indices, 'score': high_scores})
 
-# --- OPTIONAL: Flag customers with few bills ---
-if 'customer_id' in df.columns:
-    bill_counts = df.groupby('customer_id').size().reset_index(name='num_bills')
-    few_bills_ids = bill_counts[bill_counts['num_bills'] < 3]['customer_id']
-    df['few_bills_flag'] = df['customer_id'].isin(few_bills_ids).astype(int)
+# Prepare low customers data
+df_low = df[df['customer_id'].isin(low_customers)].copy()
+low_scores = []
+low_indices = []
 
-# --- Save Results ---
-df.to_csv("bills_with_clusters_anomalies.csv", index=False)
+if not df_low.empty:
+    scaler = StandardScaler()
+    X_low = scaler.fit_transform(df_low[core_features])
+    kmeans = KMeans(n_clusters=3, random_state=42)
+    df_low['cluster'] = kmeans.fit_predict(X_low)
 
-# --- Save Only Anomalies ---
+    for cluster in df_low['cluster'].unique():
+        cluster_df = df_low[df_low['cluster'] == cluster]
+        X_cluster = cluster_df[core_features]
+        model = IsolationForest(n_estimators=100, contamination='auto', random_state=42)
+        model.fit(X_cluster)
+        scores = model.decision_function(X_cluster)
+        low_scores.extend(scores)
+        low_indices.extend(cluster_df.index)
+
+low_scores_df = pd.DataFrame({'index': low_indices, 'score': low_scores})
+
+# Combine all scores
+all_scores_df = pd.concat([high_scores_df, low_scores_df], ignore_index=True)
+
+# Sort ascending (lowest score = most anomalous)
+all_scores_df.sort_values('score', inplace=True)
+
+# Pick top N anomalies you want (e.g., 20)
+N = 20
+anomaly_indices = all_scores_df.head(N)['index']
+
+# Flag anomalies in original df
+df['anomaly_flag'] = 0
+df.loc[anomaly_indices, 'anomaly_flag'] = 1
+
+# Save outputs
+df.to_csv("full_billing_anomaly_output.csv", index=False)
 df[df['anomaly_flag'] == 1].to_csv("anomalies_only.csv", index=False)
-
-# --- (Optional) Visualize Clustering ---
-sns.pairplot(df, vars=features, hue='cluster')
-plt.suptitle('KMeans Clustering of Water Bills')
-plt.show()
