@@ -25,9 +25,6 @@ def standardize_dates(df, date_columns):
 
 # Ensure numeric consistency: usage as int, others as float (2 decimal places)
 def numeric_consistency(df):
-    # Convert usage columns to int
-    for col in ['fresh_water_usage', 'waste_water_usage']:
-        df[col] = pd.to_numeric(df[col], errors='coerce').fillna(0).astype(int)
     # Convert other numeric columns to float with 2 decimals
     float_cols = ['fresh_water_rate', 'fresh_water_fixed_charge', 'waste_water_rate', 'waste_water_fixed_charge', 'latest_charges']
     for col in float_cols:
@@ -46,7 +43,7 @@ def trim_whitespace(df):
     return df
 
 if __name__ == "__main__":
-    filepath = "backend/data/mock_billing_data_updated.csv"
+    filepath = "backend/data/mock_billing_data.csv"
     df = load_billing_data(filepath)
     df = standardize_dates(df, ['bill_date', 'billing_period_start', 'billing_period_end'])
     df = numeric_consistency(df)

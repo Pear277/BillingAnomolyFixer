@@ -1,0 +1,61 @@
+import pandas as pd
+import numpy as np
+from sklearn.preprocessing import StandardScaler
+from sklearn.cluster import KMeans
+from sklearn.ensemble import IsolationForest
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# --- Load Data ---
+df = pd.read_csv("backend/data/cleaned_billing_data.csv")
+
+# --- Basic Cleanup ---
+df['fresh_water_usage'] = pd.to_numeric(df['fresh_water_usage'], errors='coerce')
+df['waste_water_usage'] = pd.to_numeric(df['waste_water_usage'], errors='coerce')
+df['latest_charges'] = pd.to_numeric(df['latest_charges'], errors='coerce')
+
+df.fillna(0, inplace=True)
+
+# --- Feature Selection (NO total_water_usage) ---
+features = ['fresh_water_usage', 'waste_water_usage', 'latest_charges']
+X = df[features].copy()
+
+# --- Standard Scaling ---
+scaler = StandardScaler()
+X_scaled = scaler.fit_transform(X)
+
+# --- KMeans Clustering ---
+kmeans = KMeans(n_clusters=3, random_state=42)
+df['cluster'] = kmeans.fit_predict(X_scaled)
+
+# --- Isolation Forest per Cluster ---
+df['anomaly'] = 0  # Default: not anomaly
+
+for cluster in df['cluster'].unique():
+    cluster_idx = df[df['cluster'] == cluster].index
+    cluster_data = df.loc[cluster_idx, features]
+    
+    cluster_scaled = scaler.fit_transform(cluster_data)
+    iso = IsolationForest(n_estimators=100, contamination=0.05, random_state=42)
+    preds = iso.fit_predict(cluster_scaled)
+    
+    df.loc[cluster_idx, 'anomaly'] = preds
+
+df['anomaly_flag'] = df['anomaly'].map({1: 0, -1: 1})
+
+# --- OPTIONAL: Flag customers with few bills ---
+if 'customer_id' in df.columns:
+    bill_counts = df.groupby('customer_id').size().reset_index(name='num_bills')
+    few_bills_ids = bill_counts[bill_counts['num_bills'] < 3]['customer_id']
+    df['few_bills_flag'] = df['customer_id'].isin(few_bills_ids).astype(int)
+
+# --- Save Results ---
+df.to_csv("bills_with_clusters_anomalies.csv", index=False)
+
+# --- Save Only Anomalies ---
+df[df['anomaly_flag'] == 1].to_csv("anomalies_only.csv", index=False)
+
+# --- (Optional) Visualize Clustering ---
+sns.pairplot(df, vars=features, hue='cluster')
+plt.suptitle('KMeans Clustering of Water Bills')
+plt.show()

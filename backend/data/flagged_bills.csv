@@ -1,0 +1,48 @@
+account_number,bill_date,issues,suggestions
+CUST0004,03-01-2022,['Charge mismatch'],{'expected_charges': 573.19}
+CUST0006,03-07-2019,['Charge mismatch'],{'expected_charges': 488.98}
+CUST0008,02-07-2018,['Fresh/Waste water usage mismatch'],{}
+CUST0008,01-01-2019,['Fresh/Waste water usage mismatch'],{}
+CUST0013,01-01-2019,['Charge mismatch'],{'expected_charges': 637.35}
+CUST0014,02-07-2018,['Fresh/Waste water usage mismatch'],{}
+CUST0014,03-07-2019,['Fresh/Waste water usage mismatch'],{}
+CUST0015,02-07-2018,['Fresh/Waste water usage mismatch'],{}
+CUST0015,03-07-2020,['Charge mismatch'],{'expected_charges': 464.92}
+CUST0016,02-07-2018,['Fresh/Waste water usage mismatch'],{}
+CUST0024,01-01-2019,['Charge mismatch'],{'expected_charges': 589.23}
+CUST0029,02-07-2018,['Fresh/Waste water usage mismatch'],{}
+CUST0030,02-07-2018,['Fresh/Waste water usage mismatch'],{}
+CUST0031,01-01-2019,['Fresh/Waste water usage mismatch'],{}
+CUST0033,01-01-2019,['Fresh/Waste water usage mismatch'],{}
+CUST0034,02-01-2021,['Charge mismatch'],{'expected_charges': 348.63}
+CUST0035,01-01-2019,['Charge mismatch'],{'expected_charges': 444.87}
+CUST0035,02-01-2020,['Fresh/Waste water usage mismatch'],{}
+CUST0039,01-01-2019,['Fresh/Waste water usage mismatch'],{}
+CUST0041,03-01-2022,['Charge mismatch'],{'expected_charges': 629.33}
+CUST0043,01-01-2019,['Fresh/Waste water usage mismatch'],{}
+CUST0048,02-07-2018,['Fresh/Waste water usage mismatch'],{}
+CUST0050,03-07-2019,['Fresh/Waste water usage mismatch'],{}
+CUST0051,01-01-2019,"['Fresh/Waste water usage mismatch', 'Charge mismatch']","{'expected_charges': 441.47, 'note': 'Price likely incorrect due to usage mismatch'}"
+CUST0052,02-01-2020,['Fresh/Waste water usage mismatch'],{}
+CUST0053,02-01-2020,['Charge mismatch'],{'expected_charges': 633.34}
+CUST0059,02-07-2018,['Fresh/Waste water usage mismatch'],{}
+CUST0060,01-01-2019,['Fresh/Waste water usage mismatch'],{}
+CUST0061,02-07-2018,['Fresh/Waste water usage mismatch'],{}
+CUST0063,02-01-2020,['Fresh/Waste water usage mismatch'],{}
+CUST0064,03-01-2022,['Charge mismatch'],{'expected_charges': 633.34}
+CUST0071,02-07-2018,['Charge mismatch'],{'expected_charges': 372.69}
+CUST0071,01-01-2019,['Charge mismatch'],{'expected_charges': 557.15}
+CUST0072,03-07-2019,['Charge mismatch'],{'expected_charges': 336.6}
+CUST0073,02-07-2018,['Fresh/Waste water usage mismatch'],{}
+CUST0073,01-01-2019,['Fresh/Waste water usage mismatch'],{}
+CUST0076,02-01-2020,['Fresh/Waste water usage mismatch'],{}
+CUST0078,02-07-2018,['Fresh/Waste water usage mismatch'],{}
+CUST0078,03-07-2019,['Fresh/Waste water usage mismatch'],{}
+CUST0080,02-01-2020,['Charge mismatch'],{'expected_charges': 565.17}
+CUST0082,01-01-2019,['Fresh/Waste water usage mismatch'],{}
+CUST0086,03-07-2019,['Charge mismatch'],{'expected_charges': 605.27}
+CUST0091,01-01-2019,['Charge mismatch'],{'expected_charges': 348.63}
+CUST0096,01-01-2019,['Charge mismatch'],{'expected_charges': 368.68}
+CUST0097,01-01-2019,['Fresh/Waste water usage mismatch'],{}
+CUST0097,02-01-2020,['Charge mismatch'],{'expected_charges': 488.98}
+CUST0099,02-07-2018,['Charge mismatch'],{'expected_charges': 448.88}

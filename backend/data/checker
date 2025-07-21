@@ -1,0 +1,35 @@
+import pandas as pd
+
+# Load the data
+df = pd.read_csv('backend/data/cleaned_billing_data.csv')
+
+# Function to calculate expected charges
+def calculate_charges(row):
+    return round(
+        row["fresh_water_usage"] * row["fresh_water_rate"] +
+        row["waste_water_usage"] * row["waste_water_rate"] +
+        row["fresh_water_fixed_charge"] +
+        row["waste_water_fixed_charge"],
+        2
+    )
+
+# Apply the calculation
+df["calculated_charges"] = df.apply(calculate_charges, axis=1)
+
+# Determine issues
+def detect_issues(row):
+    issues = []
+    if row["fresh_water_usage"] != row["waste_water_usage"]:
+        issues.append("Usage mismatch")
+    if row["calculated_charges"] != row["latest_charges"]:
+        issues.append("Charge mismatch")
+    return ", ".join(issues)
+
+# Filter rows that violate either rule
+df["issues"] = df.apply(detect_issues, axis=1)
+violating_rows = df[df["issues"] != ""]
+
+# Select and export relevant columns
+violating_rows[["account_number", "bill_date", "issues"]].to_csv("billing_issues_report.csv", index=False)
+
+print("Exported billing_issues_report.csv with identified discrepancies.")
