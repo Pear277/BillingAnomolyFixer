@@ -50,5 +50,5 @@ if __name__ == "__main__":
     df = remove_duplicates(df)
     df = trim_whitespace(df)
     # Save cleaned data for inspection
-    df.to_csv("backend/data/cleaned_billing_data.csv", index=False)
+    df.to_csv("backend/data/cleaned_billing_data2.csv", index=False)
     print("Data cleaned and saved to backend/data/cleaned_billing_data.csv")
