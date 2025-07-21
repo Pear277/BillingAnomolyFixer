@@ -1,5 +1,4 @@
 import pandas as pd
-import math
 
 def validate_and_suggest(row):
     issues = []

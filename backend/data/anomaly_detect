@@ -3,83 +3,73 @@ import numpy as np
 from sklearn.ensemble import IsolationForest
 from sklearn.cluster import KMeans
 from sklearn.preprocessing import StandardScaler
+import matplotlib.pyplot as plt
+import seaborn as sns
 
-# Load and clean
+# Load and clean data
 df = pd.read_csv("backend/data/cleaned_billing_data.csv")
-
-# Basic cleanup
 df['fresh_water_usage'] = pd.to_numeric(df['fresh_water_usage'], errors='coerce')
 df['waste_water_usage'] = pd.to_numeric(df['waste_water_usage'], errors='coerce')
 df['latest_charges'] = pd.to_numeric(df['latest_charges'], errors='coerce')
-df['customer_id'] = df['account_number']  # ensure consistency
-
-# Create total water usage column
+df['number_of_bedrooms'] = pd.to_numeric(df.get('number_of_bedrooms', np.nan), errors='coerce')
+df['customer_id'] = df['account_number']
 df['total_water_usage'] = df['fresh_water_usage'] + df['waste_water_usage']
-
-# Drop rows with missing core features
 df.dropna(subset=['total_water_usage', 'latest_charges'], inplace=True)
 
-# Define features
 core_features = ['total_water_usage', 'latest_charges']
 
-# Split into high and low bill count groups
+# Split customers by number of bills
 bill_counts = df.groupby('customer_id').size()
 high_customers = bill_counts[bill_counts >= 3].index
 low_customers = bill_counts[bill_counts < 3].index
 
-# Collect scores and indexes for high customers
-high_scores = []
-high_indices = []
+all_scored_rows = []
 
+### 1. High-bill customers (analyze per customer)
 for cust_id in high_customers:
-    cust_df = df[df['customer_id'] == cust_id]
-    X = cust_df[core_features]
-    if len(X) < 3:
+    cust_df = df[df['customer_id'] == cust_id].copy()
+    if len(cust_df) < 3:
         continue
+
+    X = cust_df[core_features]
     model = IsolationForest(n_estimators=100, contamination='auto', random_state=42)
     model.fit(X)
-    scores = model.decision_function(X)  # Higher scores = normal, lower = anomaly
-    high_scores.extend(scores)
-    high_indices.extend(cust_df.index)
+    scores = model.decision_function(X)
+    cust_df['anomaly_score'] = scores
+    all_scored_rows.append(cust_df)
 
-high_scores_df = pd.DataFrame({'index': high_indices, 'score': high_scores})
-
-# Prepare low customers data
+### 2. Low-bill customers (clustered)
 df_low = df[df['customer_id'].isin(low_customers)].copy()
-low_scores = []
-low_indices = []
-
 if not df_low.empty:
     scaler = StandardScaler()
-    X_low = scaler.fit_transform(df_low[core_features])
+    X_scaled = scaler.fit_transform(df_low[core_features])
     kmeans = KMeans(n_clusters=3, random_state=42)
-    df_low['cluster'] = kmeans.fit_predict(X_low)
-
+    df_low['cluster'] = kmeans.fit_predict(X_scaled)
+    
     for cluster in df_low['cluster'].unique():
-        cluster_df = df_low[df_low['cluster'] == cluster]
+        cluster_df = df_low[df_low['cluster'] == cluster].copy()
         X_cluster = cluster_df[core_features]
         model = IsolationForest(n_estimators=100, contamination='auto', random_state=42)
         model.fit(X_cluster)
         scores = model.decision_function(X_cluster)
-        low_scores.extend(scores)
-        low_indices.extend(cluster_df.index)
+        cluster_df['anomaly_score'] = scores
+        all_scored_rows.append(cluster_df)
 
-low_scores_df = pd.DataFrame({'index': low_indices, 'score': low_scores})
+### 3. Combine all scored data
+df_all = pd.concat(all_scored_rows, ignore_index=True)
 
-# Combine all scores
-all_scores_df = pd.concat([high_scores_df, low_scores_df], ignore_index=True)
+# Visualize anomaly score distribution
+plt.figure(figsize=(10, 4))
+sns.histplot(df_all['anomaly_score'], bins=50, kde=True)
+plt.title('Anomaly Score Distribution')
+plt.xlabel('Anomaly Score (lower = more anomalous)')
+plt.tight_layout()
+plt.show()
 
-# Sort ascending (lowest score = most anomalous)
-all_scores_df.sort_values('score', inplace=True)
+# Decide threshold — e.g., bottom 3% are anomalies
+threshold = df_all['anomaly_score'].quantile(0.03)
+df_all['anomaly_flag'] = (df_all['anomaly_score'] < threshold).astype(int)
 
-# Pick top N anomalies you want (e.g., 20)
-N = 20
-anomaly_indices = all_scores_df.head(N)['index']
-
-# Flag anomalies in original df
-df['anomaly_flag'] = 0
-df.loc[anomaly_indices, 'anomaly_flag'] = 1
-
-# Save outputs
-df.to_csv("full_billing_anomaly_output.csv", index=False)
-df[df['anomaly_flag'] == 1].to_csv("anomalies_only.csv", index=False)
+# Save results
+df_all.to_csv("full_billing_anomaly_output.csv", index=False)
+df_all[df_all['anomaly_flag'] == 1].to_csv("anomalies_only.csv", index=False)
