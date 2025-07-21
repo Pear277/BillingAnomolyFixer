@@ -534,4 +534,8 @@ address,account_number,bill_date,billing_period_start,billing_period_end,fresh_w
 "41 Commercial Road, Portsmouth, PO1 1BT",CUST0099,04/07/2021,03/01/2021,04/07/2021,86,86,2.47,31.0,1.54,65.0,440.86,3
 "14 Frogmoor, High Wycombe, HP13 5DG",CUST0100,02/07/2018,01/01/2018,02/07/2018,111,111,2.47,31.0,1.54,65.0,541.11,2
 "14 Frogmoor, Hihg Wycombe, HP13 5DG",CUST0100,01/01/2019,03/07/2018,01/01/2019,72,72,2.47,31.0,1.54,65.0,384.72,2
+<<<<<<< HEAD
 "14 Frogmoor, High Wycombe, HP13 5DG",CUST0100,03/07/2019,02/01/2019,03/07/2019,99,99,2.47,31.0,1.54,65.0,492.99,2
+=======
+"14 Frogmoor, High Wycombe, HP13 5DG",CUST0100,03/07/2019,02/01/2019,03/07/2019,99,99,2.47,31.0,1.54,65.0,492.99,2
+>>>>>>> fad847f6be0907eba71d06247f63cfdb42b05587
