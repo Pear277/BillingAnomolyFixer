@@ -3,8 +3,6 @@ import numpy as np
 from sklearn.ensemble import IsolationForest
 from sklearn.cluster import KMeans
 from sklearn.preprocessing import StandardScaler
-import matplotlib.pyplot as plt
-import seaborn as sns
 
 # Load and clean data
 df = pd.read_csv("backend/data/cleaned_billing_data.csv")
@@ -14,8 +12,7 @@ df['latest_charges'] = pd.to_numeric(df['latest_charges'], errors='coerce')
 df['number_of_bedrooms'] = pd.to_numeric(df.get('number_of_bedrooms', np.nan), errors='coerce')
 df['customer_id'] = df['account_number']
 df['total_water_usage'] = df['fresh_water_usage'] + df['waste_water_usage']
-df.dropna(subset=['total_water_usage', 'latest_charges'], inplace=True)
-
+df.dropna(subset=['total_water_usage', 'latest_charges'])
 core_features = ['total_water_usage', 'latest_charges']
 
 # Split customers by number of bills
@@ -57,14 +54,6 @@ if not df_low.empty:
 
 ### 3. Combine all scored data
 df_all = pd.concat(all_scored_rows, ignore_index=True)
-
-# Visualize anomaly score distribution
-plt.figure(figsize=(10, 4))
-sns.histplot(df_all['anomaly_score'], bins=50, kde=True)
-plt.title('Anomaly Score Distribution')
-plt.xlabel('Anomaly Score (lower = more anomalous)')
-plt.tight_layout()
-plt.show()
 
 # Decide threshold — e.g., bottom 3% are anomalies
 threshold = df_all['anomaly_score'].quantile(0.03)
