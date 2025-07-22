@@ -1,5 +1,5 @@
 from langchain.tools import Tool, StructuredTool
-from backend.data.ingest_and_address_fix import BillingDataFixer
+from backend.utils.ingest_and_address_fix import BillingDataFixer
 
 
 # Create an instance of your fixer agent
