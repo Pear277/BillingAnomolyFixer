@@ -17,13 +17,18 @@ class BillingDataFixer:
         valid_streets = set()
         for filename in os.listdir(folder_path):
             if filename.endswith('.csv'):
-                with open(os.path.join(folder_path, filename), newline='', encoding='utf-8') as f:
-                    reader = csv.DictReader(f)
-                    for row in reader:
-                        street = row.get("name1")
-                        if street:
-                            valid_streets.add(street.strip())
-        print(f"✅ Loaded {len(valid_streets)} valid street names.")
+                path = os.path.join(folder_path, filename)
+                with open(path, newline='', encoding='utf-8-sig') as f:
+                    reader = csv.reader(f)
+                    for i, row in enumerate(reader):
+                        # Skip header row (assumed first row)
+                        if i == 0:
+                            continue
+                        if len(row) >= 3:
+                            street = row[2].strip()  # third column is index 2
+                            if street and street.lower() != "sea" and len(street) > 2:
+                                valid_streets.add(street)
+        print(f"Loaded {len(valid_streets)} valid street names.")
         return valid_streets
 
     def cluster_streets(self, streets):
@@ -46,28 +51,28 @@ class BillingDataFixer:
                 return candidate
         return freq.idxmax()
 
-    def run(self, billing_path: str, reference_folder: str, output_path: str) -> str:
+    def run(self, billing_path: str,reference_folder: str, output_path: str) -> str:
         df = pd.read_csv(billing_path)
 
-        # 🧼 Clean strings
+        # Clean strings
         df = df.drop_duplicates()
         str_cols = df.select_dtypes(include='object').columns
         for col in str_cols:
             df[col] = df[col].astype(str).str.strip()
 
-        # 📆 Standardize dates
+        # Standardize dates
         for col in ['bill_date', 'billing_period_start', 'billing_period_end']:
             if col in df.columns:
                 df[col] = df[col].apply(self.robust_parse_date)
 
-        # 🔢 Fix numeric types
+        # Fix numeric types
         numeric_cols = ['fresh_water_rate', 'fresh_water_fixed_charge', 'waste_water_rate',
                         'waste_water_fixed_charge', 'latest_charges']
         for col in numeric_cols:
             if col in df.columns:
                 df[col] = pd.to_numeric(df[col], errors='coerce').round(2)
 
-        # 🏘️ Street corrections
+        # Street corrections
         df["street"] = df["address"].apply(lambda x: x.split(",")[0].strip())
         valid_streets = self.load_valid_streets(reference_folder)
 
@@ -92,3 +97,4 @@ class BillingDataFixer:
         df.drop(columns=["street", "corrected_street"], inplace=True)
         os.makedirs(os.path.dirname(output_path), exist_ok=True)
         df.to_csv(output_path, index=False)
+        return f"✅ Billing data cleaned and corrected using fuzzy reference matching. File saved to: {output_path}"
