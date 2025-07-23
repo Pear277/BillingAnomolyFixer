@@ -1,7 +1,9 @@
 from crewai import Agent
 from langchain_community.llms import HuggingFaceHub, huggingface_hub
 from backend.tools.anomaly_tools import rule_anomaly_tool, ml_anomaly_tool, combined_anomaly_detector
-from backend.tools.autofix_tool import billing_clean_fixer_tool
+from backend.tools.autofix_tool import auto_fix_tool
+import os
+
 llm = huggingface_hub.HuggingFaceHub(
     repo_id="google/flan-t5-base",
     huggingfacehub_api_token=os.getenv("HUGGINGFACEHUB_API_TOKEN"),
@@ -14,7 +16,7 @@ auto_fix_agent = Agent(
     name = "FixerAgent",
     role = "Billing Data Cleaner",
     goal = "Fix formatting issues and incorrect addresses",
-    tools = [billing_clean_fixer_tool],
+    tools = [auto_fix_tool],
     verbose = True
 )
 
