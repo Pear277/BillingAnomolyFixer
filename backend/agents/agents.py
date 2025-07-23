@@ -1,5 +1,5 @@
 from crewai import Agent
-from langchain_community.llms import HuggingFaceHub
+from langchain_community.llms import HuggingFaceHub, huggingface_hub
 from backend.tools.anomaly_tools import rule_anomaly_tool, ml_anomaly_tool, combined_anomaly_detector
 from backend.tools.autofix_tool import billing_clean_fixer_tool
 llm = huggingface_hub.HuggingFaceHub(

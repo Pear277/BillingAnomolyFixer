@@ -25,7 +25,7 @@ class BillingDataFixer:
                         if i == 0:
                             continue
                         if len(row) >= 3:
-                            street = row[2].strip()  # third column is index 2
+                            street = row[2].strip()  # third column is index 2pip
                             if street and street.lower() != "sea" and len(street) > 2:
                                 valid_streets.add(street)
         print(f"Loaded {len(valid_streets)} valid street names.")
