@@ -2,7 +2,6 @@ from crewai import Agent
 from langchain.llms import huggingface_hub
 from backend.tools.anomaly_tools import rule_anomaly_tool, ml_anomaly_tool
 from backend.tools.autofix_tool import billing_clean_fixer_tool
-
 llm = huggingface_hub.HuggingFaceHub(
     repo_id="google/flan-t5-base",
     model_kwargs={"temperature": 0.1, "max_length": 512},
@@ -14,7 +13,6 @@ auto_fix_agent = Agent(
     goal="Clean any incoming billing data: fix date formatting issues and correct typos in UK addresses in billing data.",
     backstory="You are a data cleaning agent specialized in recognising and fixing common data entry mistakes in utility billing data.",
     tools=[billing_clean_fixer_tool],
-    llm=llm,
     verbose=True,
 )
 
