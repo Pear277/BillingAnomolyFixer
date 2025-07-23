@@ -2,11 +2,7 @@ from crewai import Agent
 from langchain_community.llms import HuggingFaceHub
 from backend.tools.anomaly_tools import rule_anomaly_tool, ml_anomaly_tool, combined_anomaly_detector
 from backend.tools.autofix_tool import billing_clean_fixer_tool
-import os
-from dotenv import load_dotenv
-load_dotenv()
-
-llm = HuggingFaceHub(
+llm = huggingface_hub.HuggingFaceHub(
     repo_id="google/flan-t5-base",
     huggingfacehub_api_token=os.getenv("HUGGINGFACEHUB_API_TOKEN"),
     model_kwargs={"temperature": 0.1, "max_length": 512},
