@@ -3,13 +3,16 @@ from backend.tools.anomaly_tools import rule_anomaly_tool, ml_anomaly_tool, comb
 from backend.tools.autofix_tool import auto_fix_tool
 from crewai import LLM
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 llm = LLM(
+    model="huggingface/together/deepseek-ai/DeepSeek-R1",
     provider="huggingface",
-    model="huggingface/google/flan-t5-base",
     temperature=0.1,
     max_tokens= 512,
-    huggingfacehub_api_token= os.getenv("HUGGINGFACEHUB_API_TOKEN")
+    api_key= os.getenv("HUGGINGFACEHUB_API_TOKEN")
     
 )
 
