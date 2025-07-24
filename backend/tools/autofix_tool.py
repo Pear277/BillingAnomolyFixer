@@ -1,7 +1,7 @@
-from langchain.tools import tool
 from utils.ingest_and_address_fix import BillingDataFixer
+from crewai.tools import tool
 
-@tool
+@tool("auto_fix_tool")
 def auto_fix_tool(billing_path: str, reference_folder: str, output_path: str) -> str:
     """
     Cleans billing data by fixing date formatting issues and correcting typos in UK addresses.

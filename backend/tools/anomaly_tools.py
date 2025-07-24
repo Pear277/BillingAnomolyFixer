@@ -1,9 +1,9 @@
-from langchain.tools import tool
 from utils.anomaly_helpers import rule_based_check, ml_based_check
 import pandas as pd
 import json
+from crewai.tools import tool
 
-@tool
+@tool("rule_anomaly_tool")
 def rule_anomaly_tool(csv_path: str) -> str:
     """
     Detects anomalies in billing data using rule-based checks.
@@ -19,7 +19,7 @@ def rule_anomaly_tool(csv_path: str) -> str:
     anomalies.to_json("data/output/rule_based_anomalies.json",orient='records', indent=2)
     return "data/output/rule_based_anomalies.json"
 
-@tool
+@tool("ml_anomaly_tool")
 def ml_anomaly_tool(csv_path: str) -> str:
     """
     Detects anomalies in billing data using machine learning-based checks.
@@ -35,7 +35,7 @@ def ml_anomaly_tool(csv_path: str) -> str:
     anomalies.to_json("data/output/ml_based_anomalies.json",orient='records', indent=2)
     return "data/output/ml_based_anomalies.json"
 
-@tool
+@tool("combined_anomaly_detector")
 def combined_anomaly_detector(csv_path: str) -> str:
     """
     Merges rule-based and ML anomalies into a unified JSON file
