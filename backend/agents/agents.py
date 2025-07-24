@@ -13,7 +13,6 @@ llm = LLM(
     temperature=0.1,
     max_tokens= 512,
     api_key= os.getenv("HUGGINGFACEHUB_API_TOKEN")
-    
 )
 
 auto_fix_agent = Agent(
@@ -23,7 +22,7 @@ auto_fix_agent = Agent(
     backstory = "You are an expert in cleaning and correcting billing data, focusing on date formats and address typos.",
     tools = [auto_fix_tool],
     llm=llm,
-    verbose = True
+    verbose=True
 )
 
 investigator_agent = Agent(
