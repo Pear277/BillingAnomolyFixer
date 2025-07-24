@@ -5,12 +5,11 @@ from crewai import LLM
 import os
 
 llm = LLM(
+    model="huggingface/together/deepseek-ai/DeepSeek-R1",
     provider="huggingface",
-    model="huggingface/google/flan-t5-base",
     temperature=0.1,
     max_tokens= 512,
-    huggingfacehub_api_token= os.getenv("HUGGINGFACEHUB_API_TOKEN")
-    
+    api_key= os.getenv("HUGGINGFACEHUB_API_TOKEN")
 )
 
 auto_fix_agent = Agent(
@@ -20,7 +19,7 @@ auto_fix_agent = Agent(
     backstory = "You are an expert in cleaning and correcting billing data, focusing on date formats and address typos.",
     tools = [auto_fix_tool],
     llm=llm,
-    verbose = True
+    verbose=True
 )
 
 investigator_agent = Agent(
