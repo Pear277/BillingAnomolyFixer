@@ -90,7 +90,7 @@ class BillingDataFixer:
         )
 
         df["address"] = df.apply(
-            lambda row: ', '.join([row["corrected_street"]] + row["address"].split(',')[1:]).strip(),
+            lambda row: ', '.join([row["corrected_street"]] + [part.strip() for part in row["address"].split(',')[1:]]),
             axis=1
         )
 

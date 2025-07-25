@@ -1,6 +1,7 @@
-from utils.anomaly_helpers import rule_based_check, ml_based_check
+from backend.utils.anomaly_helpers import rule_based_check, ml_based_check
 import pandas as pd
 import json
+import os
 from crewai.tools import tool
 
 @tool("rule_anomaly_tool")
@@ -16,8 +17,10 @@ def rule_anomaly_tool(csv_path: str) -> str:
     """
     df = pd.read_csv(csv_path)
     anomalies = rule_based_check(df)
-    anomalies.to_json("data/output/rule_based_anomalies.json",orient='records', indent=2)
-    return "data/output/rule_based_anomalies.json"
+    output_path = "backend/data/rule_based_anomalies.json"
+    os.makedirs(os.path.dirname(output_path), exist_ok=True)
+    anomalies.to_json(output_path, orient='records', indent=2)
+    return output_path
 
 @tool("ml_anomaly_tool")
 def ml_anomaly_tool(csv_path: str) -> str:
@@ -31,9 +34,11 @@ def ml_anomaly_tool(csv_path: str) -> str:
         str: JSON string containing detected anomalies.
     """
     df = pd.read_csv(csv_path)
-    anomalies = ml_based_check(df)
-    anomalies.to_json("data/output/ml_based_anomalies.json",orient='records', indent=2)
-    return "data/output/ml_based_anomalies.json"
+    anomalies = ml_based_check(csv_path)
+    output_path = "backend/data/ml_based_anomalies.json"
+    os.makedirs(os.path.dirname(output_path), exist_ok=True)
+    anomalies.to_json(output_path, orient='records', indent=2)
+    return output_path
 
 @tool("combined_anomaly_detector")
 def combined_anomaly_detector(csv_path: str) -> str:
@@ -48,32 +53,44 @@ def combined_anomaly_detector(csv_path: str) -> str:
     rule_based = rule_based_check(df)
     ml_based = ml_based_check(csv_path)
 
-    # Map rule-based results for lookup
-    rule_map = {
-        (row["account_number"], row["bill_date"]): {
-            "issues": row["issues"],
-            "corrections": row["corrections"]
-        }
-        for _, row in rule_based.iterrows()
-    }
-
+    # Create combined results from both rule-based and ML
     combined = []
+    
+    # Add all rule-based anomalies
+    for _, row in rule_based.iterrows():
+        # Get corresponding row from original data
+        orig_row = df[(df["account_number"] == row["account_number"]) & 
+                     (df["bill_date"] == row["bill_date"])]
+        if not orig_row.empty:
+            orig_row = orig_row.iloc[0]
+            combined.append({
+                "account_number": str(row["account_number"]),
+                "bill_date": str(row["bill_date"]),
+                "address": str(orig_row.get("address", "")),
+                "fresh_water_usage": int(orig_row.get("fresh_water_usage", 0)),
+                "waste_water_usage": int(orig_row.get("waste_water_usage", 0)),
+                "latest_charges": float(orig_row.get("latest_charges", 0)),
+                "issues": list(row["issues"]),
+                "corrections": dict(row["corrections"])
+            })
+    
+    # Add ML-only anomalies (not already in rule-based)
+    rule_keys = {(row["account_number"], row["bill_date"]) for _, row in rule_based.iterrows()}
     for _, row in ml_based.iterrows():
         key = (row["account_number"], row["bill_date"])
-        rule_info = rule_map.get(key, {})
-
         combined.append({
-            "account_number": row.get("account_number"),
-            "bill_date": row.get("bill_date"),
-            "address": row.get("address", None),
-            "fresh_water_usage": row.get("fresh_water_usage"),
-            "waste_water_usage": row.get("waste_water_usage"),
-            "latest_charges": row.get("latest_charges"),
-            "issues": rule_info.get("issues", ["ML anomaly detected"]),
-            "corrections": rule_info["corrections"] if "corrections" in rule_info else {}
+            "account_number": str(row.get("account_number", "")),
+            "bill_date": str(row.get("bill_date", "")),
+            "address": str(row.get("address", "")),
+            "fresh_water_usage": int(row.get("fresh_water_usage", 0)),
+            "waste_water_usage": int(row.get("waste_water_usage", 0)),
+            "latest_charges": float(row.get("latest_charges", 0)),
+            "issues": ["ML anomaly detected"],
+            "corrections": {}
         })
 
-    output_path = "data/output/combined_anomalies.json"
+    output_path = "backend/data/combined_anomalies.json"
+    os.makedirs(os.path.dirname(output_path), exist_ok=True)
     with open(output_path, "w") as f:
         json.dump(combined, f, indent=2)
 

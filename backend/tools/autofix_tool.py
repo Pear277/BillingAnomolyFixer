@@ -1,4 +1,4 @@
-from utils.ingest_and_address_fix import BillingDataFixer
+from backend.utils.ingest_and_address_fix import BillingDataFixer
 from crewai.tools import tool
 
 @tool("auto_fix_tool")

@@ -5,8 +5,7 @@ from crewai import LLM
 import os
 from dotenv import load_dotenv
 
-load_dotenv()
-
+""""
 llm = LLM(
     model="huggingface/together/deepseek-ai/DeepSeek-R1",
     provider="huggingface",
@@ -15,22 +14,28 @@ llm = LLM(
     api_key= os.getenv("HUGGINGFACEHUB_API_TOKEN")
 )
 
+"""
+
+llm = LLM(model="ollama/qwen2.5:7b")
+
 auto_fix_agent = Agent(
-    name = "FixerAgent",
-    role = "Billing Data Cleaner",
-    goal = "Fix formatting issues and incorrect addresses",
-    backstory = "You are an expert in cleaning and correcting billing data, focusing on date formats and address typos.",
-    tools = [auto_fix_tool],
+    role="Billing Data Cleaner", 
+    goal="Clean billing data by fixing date formatting and address typos",
+    backstory="You are an expert at cleaning billing data using the auto_fix_tool. When given a task, you immediately use the tool with the provided parameters.",
+    tools=[auto_fix_tool],
+    verbose=True,
     llm=llm,
-    verbose=True
+    allow_delegation=False,
+    max_iter=2
 )
 
 investigator_agent = Agent(
-    name="InvestigatorAgent",
     role="Anomaly Detector",
-    goal="Find anomalies in billing data using both ML and rule-based logic",
-    backstory="You are an expert in detecting anomalies in billing data, using both machine learning and rule-based methods.",
+    goal="Detect anomalies in billing data using the combined_anomaly_detector tool",
+    backstory="You are an expert at detecting anomalies in billing data. When given a CSV file path, you use the combined_anomaly_detector tool to analyze it.",
     tools=[combined_anomaly_detector],
     llm=llm,
-    verbose=True
+    allow_delegation=False,
+    verbose=True,
+    max_iter=2
 )
