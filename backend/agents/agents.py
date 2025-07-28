@@ -1,9 +1,35 @@
 from crewai import Agent
-from backend.tools.anomaly_tools import rule_anomaly_tool, ml_anomaly_tool, combined_anomaly_detector
-from backend.tools.autofix_tool import auto_fix_tool
+from tools.anomaly_tools import rule_anomaly_tool, ml_anomaly_tool, combined_anomaly_detector
+from tools.autofix_tool import auto_fix_tool
 from crewai import LLM
 import os
 from dotenv import load_dotenv
+from crewai_tools import RagTool
+from embedchain.config import AppConfig
+
+config = {
+    "embedding_model": {
+        "provider": "huggingface",        # keep this fixed
+        "config": {
+            "model": "sentence-transformers/all-MiniLM-L6-v2"
+        }
+    },
+    "chunker": {
+        "chunk_size": 300,
+        "chunk_overlap": 30
+    }
+}
+
+
+# Singleton pattern for efficiency
+_rag_tool_instance = None
+
+def get_rag_tool():
+    global _rag_tool_instance
+    if _rag_tool_instance is None:
+        _rag_tool_instance = RagTool(config=config)
+        _rag_tool_instance.add("backend/data/first_10_customers.csv", data_type="csv")
+    return _rag_tool_instance
 
 """"
 llm = LLM(
@@ -16,26 +42,29 @@ llm = LLM(
 
 """
 
-llm = LLM(model="ollama/qwen2.5:7b")
+llm = LLM(model="ollama/qwen2.5:7b", timeout=1200, temperature=0.1)
+
 
 auto_fix_agent = Agent(
     role="Billing Data Cleaner", 
     goal="Clean billing data by fixing date formatting and address typos",
-    backstory="You are an expert at cleaning billing data using the auto_fix_tool. When given a task, you immediately use the tool with the provided parameters.",
+    backstory="You are an expert at cleaning billing data using the auto_fix_tool. When given a task, you call the tool once with the provided parameters and report the result.",
     tools=[auto_fix_tool],
     verbose=True,
     llm=llm,
     allow_delegation=False,
-    max_iter=2
+    max_iter=1
 )
 
 investigator_agent = Agent(
     role="Anomaly Detector",
     goal="Detect anomalies in billing data using the combined_anomaly_detector tool",
-    backstory="You are an expert at detecting anomalies in billing data. When given a CSV file path, you use the combined_anomaly_detector tool to analyze it.",
+    backstory="You are an expert at detecting anomalies in billing data. When given a CSV file path, you use the combined_anomaly_detector tool once to analyze it and report the results.",
     tools=[combined_anomaly_detector],
     llm=llm,
     allow_delegation=False,
     verbose=True,
-    max_iter=2
+    max_iter=1
 )
+
+# explainer_agent will be created in crew_flow.py after cleaned file is ready

@@ -1,4 +1,4 @@
-from backend.utils.anomaly_helpers import rule_based_check, ml_based_check
+from utils.anomaly_helpers import rule_based_check, ml_based_check
 import pandas as pd
 import json
 import os

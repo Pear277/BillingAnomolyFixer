@@ -1,0 +1,14 @@
+[
+  {
+    "account_number": "CUST0004",
+    "issue": "Charge mismatch",
+    "reason": "Overcharged \u00a31377.42 vs expected \u00a3573.19 due to incorrect application of rates and fixed charges.",
+    "fix": "Recalculate charges based on accurate usage and rates"
+  },
+  {
+    "account_number": "CUST0006",
+    "issue": "Charge mismatch",
+    "reason": "Undercharged \u00a3438.87 vs expected \u00a3488.98 due to incorrect application of rates and fixed charges.",
+    "fix": "Apply correct rate and fixed charge"
+  }
+]
