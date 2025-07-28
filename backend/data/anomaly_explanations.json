@@ -1,14 +1,26 @@
 [
   {
-    "account_number": "CUST0004",
-    "issue": "Charge mismatch",
-    "reason": "Overcharged \u00a31377.42 vs expected \u00a3573.19 due to incorrect application of rates and fixed charges.",
-    "fix": "Recalculate charges based on accurate usage and rates"
+    "account_number": "CUST0008",
+    "bill_date": "02-07-2018",
+    "explanation": "The fresh/waste water usage mismatch for CUST0008 on 02-07-2018 is due to an error in the meter readings. The fresh water usage of 126 and waste water usage of 130 do not match, which could indicate a discrepancy in the meter readings or data entry.",
+    "suggested_fix": "Review the meter readings for CUST0008 and ensure accurate data is entered into the billing system."
   },
   {
-    "account_number": "CUST0006",
-    "issue": "Charge mismatch",
-    "reason": "Undercharged \u00a3438.87 vs expected \u00a3488.98 due to incorrect application of rates and fixed charges.",
-    "fix": "Apply correct rate and fixed charge"
+    "account_number": "CUST0008",
+    "bill_date": "01-01-2019",
+    "explanation": "The fresh/waste water usage mismatch for CUST0008 on 01-01-2019 is due to an error in the meter readings. The fresh water usage of 111 and waste water usage of 116 do not match, which could indicate a discrepancy in the meter readings or data entry.",
+    "suggested_fix": "Review the meter readings for CUST0008 and ensure accurate data is entered into the billing system."
+  },
+  {
+    "account_number": "CUST0004",
+    "bill_date": "03-01-2022",
+    "explanation": "The ML anomaly detected for CUST0004 on 03-01-2022 is due to an error in the machine learning model used for billing. The system flagged this as anomalous, but the actual charges of \u00a31,377.42 do not align with expected charges.",
+    "suggested_fix": "Review and correct the machine learning model to ensure accurate charge calculations are made for future bills."
+  },
+  {
+    "account_number": "CUST0009",
+    "bill_date": "03-07-2020",
+    "explanation": "The ML anomaly detected for CUST0009 on 03-07-2020 is due to an error in the machine learning model used for billing. The system flagged this as anomalous, but the actual charges of \u00a3380.71 do not align with expected charges.",
+    "suggested_fix": "Review and correct the machine learning model to ensure accurate charge calculations are made for future bills."
   }
 ]

@@ -39,12 +39,16 @@ if __name__ == "__main__":
         all_anomalies = json.load(f)
     
     # Filter for only CUST0001 to CUST0010
-    first_10_anomalies = [a for a in all_anomalies if a["account_number"] in [f"CUST{i:04d}" for i in range(1, 11)]]
+    first_10_customers = [f"CUST{i:04d}" for i in range(1, 11)]
+    first_10_anomalies = [a for a in all_anomalies if a["account_number"] in first_10_customers]
+    
+    print(f"Found {len(first_10_anomalies)} anomalies for first 10 customers")
+    for anomaly in first_10_anomalies:
+        print(f"- {anomaly['account_number']}: {anomaly['issues']}")
     
     # Create filtered CSV with only first 10 customers for RAG
     import pandas as pd
     billing_df = pd.read_csv("backend/data/cleaned_billing_streetfix.csv")
-    first_10_customers = [f"CUST{i:04d}" for i in range(1, 11)]
     filtered_df = billing_df[billing_df['account_number'].isin(first_10_customers)]
     filtered_df.to_csv("backend/data/first_10_customers.csv", index=False)
     
@@ -70,23 +74,19 @@ if __name__ == "__main__":
     explainer_task = Task(
         agent=explainer_agent,
         description=f"""
-Analyze these billing anomalies and create explanations:
+Analyze these {len(first_10_anomalies)} billing anomalies and create explanations:
 {anomalies_str}
 
 For each anomaly:
-1. Use BillingRAG tool with a simple string query like "CUST0004 billing history" or "charge mismatch patterns"
-2. Generate explanation based on the context
-3. Suggest a fix
+1. Use BillingRAG tool with the exact account number (e.g., "CUST0008 billing data")
+2. Analyze the billing history and patterns
+3. Generate explanation based on the retrieved context
+4. Suggest a specific fix
 
-Output JSON array:
-[
-  {{"account_number": "CUST0004", "issue": "Charge mismatch", "reason": "Overcharged £1377.42 vs expected £573.19", "fix": "Recalculate charges"}},
-  {{"account_number": "CUST0006", "issue": "Charge mismatch", "reason": "Undercharged £438.87 vs expected £488.98", "fix": "Apply correct rate"}}
-]
-
-Process ALL anomalies for customers CUST0001-CUST0010 only.
+You MUST process ALL {len(first_10_anomalies)} anomalies. Do not skip any.
+Return a JSON array with one explanation object per anomaly.
 """,
-        expected_output="JSON array with explanations for first 10 customers' anomalies"
+        expected_output=f"JSON array with exactly {len(first_10_anomalies)} anomaly explanations"
     )
     
     # Run explainer task

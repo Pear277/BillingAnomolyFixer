@@ -2,16 +2,26 @@ import pandas as pd
 import os
 import csv
 from rapidfuzz import fuzz
+from .autofix_tracker import AutofixTracker
 
 class BillingDataFixer:
     def __init__(self, threshold=90):
         self.threshold = threshold
+        self.tracker = AutofixTracker()
 
-    def robust_parse_date(self, val):
+    def robust_parse_date(self, val, account_number=None, bill_date=None, field=None):
+        original = str(val)
         dt = pd.to_datetime(val, errors='coerce', dayfirst=True)
         if pd.isnull(dt):
             dt = pd.to_datetime(val, errors='coerce', dayfirst=False)
-        return '' if pd.isnull(dt) else dt.strftime('%d-%m-%Y')
+        
+        fixed = '' if pd.isnull(dt) else dt.strftime('%d-%m-%Y')
+        
+        # Track change if values differ
+        if original != fixed and account_number and field:
+            self.tracker.track_date_fix(account_number, bill_date, field, original, fixed)
+        
+        return fixed
 
     def load_valid_streets(self, folder_path):
         valid_streets = set()
@@ -53,6 +63,10 @@ class BillingDataFixer:
 
     def run(self, billing_path: str,reference_folder: str, output_path: str) -> str:
         df = pd.read_csv(billing_path)
+        
+        # Filter to first 10 customers only
+        first_10_customers = [f'CUST{i:04d}' for i in range(1, 11)]
+        df = df[df['account_number'].isin(first_10_customers)]
 
         # Clean strings
         df = df.drop_duplicates()
@@ -60,17 +74,32 @@ class BillingDataFixer:
         for col in str_cols:
             df[col] = df[col].astype(str).str.strip()
 
-        # Standardize dates
+        # Standardize dates with tracking
         for col in ['bill_date', 'billing_period_start', 'billing_period_end']:
             if col in df.columns:
-                df[col] = df[col].apply(self.robust_parse_date)
+                df[col] = df.apply(lambda row: self.robust_parse_date(
+                    row[col], 
+                    row.get('account_number'), 
+                    row.get('bill_date'), 
+                    col
+                ), axis=1)
 
-        # Fix numeric types
+        # Fix numeric types with tracking
         numeric_cols = ['fresh_water_rate', 'fresh_water_fixed_charge', 'waste_water_rate',
                         'waste_water_fixed_charge', 'latest_charges']
         for col in numeric_cols:
             if col in df.columns:
+                original_values = df[col].astype(str)
                 df[col] = pd.to_numeric(df[col], errors='coerce').round(2)
+                
+                # Track numeric changes
+                for idx, (orig, fixed) in enumerate(zip(original_values, df[col])):
+                    if str(orig) != str(fixed) and not pd.isna(fixed):
+                        self.tracker.track_numeric_fix(
+                            df.iloc[idx]['account_number'],
+                            df.iloc[idx]['bill_date'],
+                            col, orig, fixed
+                        )
 
         # Street corrections
         df["street"] = df["address"].apply(lambda x: x.split(",")[0].strip())
@@ -89,12 +118,29 @@ class BillingDataFixer:
             axis=1
         )
 
-        df["address"] = df.apply(
-            lambda row: ', '.join([row["corrected_street"]] + [part.strip() for part in row["address"].split(',')[1:]]),
-            axis=1
-        )
+        # Track address changes and apply corrections
+        def fix_address(row):
+            original = row["address"]
+            fixed = ', '.join([row["corrected_street"]] + [part.strip() for part in row["address"].split(',')[1:]])
+            
+            if original != fixed:
+                self.tracker.track_address_fix(
+                    row["account_number"],
+                    row["bill_date"],
+                    original,
+                    fixed
+                )
+            return fixed
+        
+        df["address"] = df.apply(fix_address, axis=1)
 
         df.drop(columns=["street", "corrected_street"], inplace=True)
         os.makedirs(os.path.dirname(output_path), exist_ok=True)
         df.to_csv(output_path, index=False)
-        return output_path
+        
+        # Save autofix changes log
+        changes_path = output_path.replace('.csv', '_autofix_changes.json')
+        changes_count = self.tracker.save_changes(changes_path)
+        summary = self.tracker.get_summary()
+        
+        return f"Cleaned data saved to {output_path}. Made {changes_count} changes: {summary}. Changes log: {changes_path}"

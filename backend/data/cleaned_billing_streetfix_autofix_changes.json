@@ -1,0 +1,38 @@
+[
+  {
+    "account_number": "CUST0005",
+    "bill_date": "2019/01/01",
+    "change_type": "date_format_year_first",
+    "field": "bill_date",
+    "original_value": "2019/01/01",
+    "fixed_value": "01-01-2019",
+    "timestamp": "2025-07-28T20:11:20.205293"
+  },
+  {
+    "account_number": "CUST0007",
+    "bill_date": "2019/01/01",
+    "change_type": "date_format_year_first",
+    "field": "bill_date",
+    "original_value": "2019/01/01",
+    "fixed_value": "01-01-2019",
+    "timestamp": "2025-07-28T20:11:20.217440"
+  },
+  {
+    "account_number": "CUST0009",
+    "bill_date": "2019/01/01",
+    "change_type": "date_format_year_first",
+    "field": "bill_date",
+    "original_value": "2019/01/01",
+    "fixed_value": "01-01-2019",
+    "timestamp": "2025-07-28T20:11:20.223986"
+  },
+  {
+    "account_number": "CUST0005",
+    "bill_date": "03-07-2019",
+    "change_type": "address_spelling_correction",
+    "field": "address",
+    "original_value": "17 Marekt Square",
+    "fixed_value": "17 Market Square",
+    "timestamp": "2025-07-28T20:12:49.444053"
+  }
+]

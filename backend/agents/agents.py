@@ -9,17 +9,23 @@ from embedchain.config import AppConfig
 
 config = {
     "embedding_model": {
-        "provider": "huggingface",        # keep this fixed
+        "provider": "huggingface",
         "config": {
             "model": "sentence-transformers/all-MiniLM-L6-v2"
         }
     },
     "chunker": {
-        "chunk_size": 300,
-        "chunk_overlap": 30
+        "chunk_size": 50,
+        "chunk_overlap": 5
+    },
+    "vectordb": {
+        "provider": "chroma",
+        "config": {
+            "collection_name": "billing_data",
+            "dir": "backend/db"
+        }
     }
 }
-
 
 # Singleton pattern for efficiency
 _rag_tool_instance = None
