@@ -56,12 +56,13 @@ if __name__ == "__main__":
     
     # Create explainer agent with RAG tool
     explainer_agent = Agent(
-        role="Anomaly Explainer",
-        goal="Explain anomalies and suggest accurate fixes using RAG and actual billing data",
+        role="Billing Anomaly Analyst",
+        goal="Provide detailed, data-driven explanations for billing anomalies with specific fixes",
         backstory=(
-            "You are a meticulous billing analyst. You must analyze the anomalies provided "
-            "and use the billing database (via RAG) to explain each anomaly precisely. "
-            "Do NOT make up data. Do NOT invent customer accounts. Only analyze the anomalies you're given."
+            "You are an expert billing analyst who examines actual billing patterns and historical data. "
+            "For each anomaly, you analyze the customer's billing history, identify specific issues like "
+            "rate changes, calculation errors, or usage spikes, and provide actionable solutions. "
+            "You focus on concrete data points like charge amounts, usage patterns, and billing periods."
         ),
         tools=[get_rag_tool()],
         llm=llm,
@@ -71,66 +72,78 @@ if __name__ == "__main__":
     )
     
     # Task with anomaly JSON embedded directly
-    explainer_task = Task(
+explainer_task = Task(
         agent=explainer_agent,
         description=f"""
-Analyze these {len(first_10_anomalies)} billing anomalies and create explanations:
+Analyze these {len(first_10_anomalies)} billing anomalies with detailed data analysis:
 {anomalies_str}
 
 For each anomaly:
-1. Use BillingRAG tool with the exact account number (e.g., "CUST0008 billing data")
-2. Analyze the billing history and patterns
-3. Generate explanation based on the retrieved context
-4. Suggest a specific fix
+1. Use the RAG tool to get the customer's complete billing history.
+2. Compare current charges with historical patterns (look for sudden spikes, rate changes).
+3. Analyze usage vs charges relationship (e.g., same usage but different charges indicates rate/calculation issue).
+4. Identify the specific issue and clearly state it in the explanation:
+   - If it's a charge mismatch, state: "Charge mismatch: You were charged £X, but the correct charge should be £Y. Fix: Adjust the charge to £Y."
+   - If it's a usage mismatch, state: "Usage mismatch: Usage recorded as Z units, but meter readings suggest Y units. Fix: Check your meter readings and update the bill accordingly."
+   - If it's an ML anomaly (spike high or low), state: "Unusual usage pattern detected: Usage/charge is unusually high/low compared to history. Fix: Review this bill as it may be an error."
+5. Always provide a concrete fix with a specific action for each anomaly, never leave the fix empty.
 
-You MUST process ALL {len(first_10_anomalies)} anomalies. Do not skip any.
-Return a JSON array with one explanation object per anomaly.
+Return a JSON array with exactly {len(first_10_anomalies)} anomaly explanations, each containing:
+- "issue": a clear statement of the problem,
+- "fix": a specific, actionable fix,
+
+Example analysis:
+- Charge mismatch: "Charge mismatch: You were charged £1,400, but the correct charge should be £600. Fix: Adjust the charge to £600."
+- Usage mismatch: "Usage mismatch: Usage recorded as 200 units, but meter readings suggest 119 units. Fix: Check your meter readings and update the bill accordingly."
+- ML anomaly: "Unusual usage spike detected: Usage increased by 300% compared to previous months. Fix: Review this bill as it may be an error."
+
+Return only the JSON array as output.
 """,
         expected_output=f"JSON array with exactly {len(first_10_anomalies)} anomaly explanations"
     )
     
+    
     # Run explainer task
-    explainer_crew = Crew(
+explainer_crew = Crew(
         tasks=[explainer_task],
         agents=[explainer_agent],
         verbose=True
     )
     
-    result = explainer_crew.kickoff()
+result = explainer_crew.kickoff()
+
+# Save explainer output to file
+import re
+
+with open("backend/data/anomaly_explanations.json", "w") as f:
+    result_str = str(result)
+    print(f"\nFull result length: {len(result_str)} characters")
     
-    # Save explainer output to file
-    import re
+    # Find ALL JSON blocks and get the last one (final result)
+    json_blocks = re.findall(r'```json\s*([\s\S]*?)```', result_str)
     
-    with open("backend/data/anomaly_explanations.json", "w") as f:
-        result_str = str(result)
-        print(f"\nFull result length: {len(result_str)} characters")
+    if json_blocks:
+        # Use the LAST JSON block (final result, not tool calls)
+        json_content = json_blocks[-1].strip()
+        print(f"Found {len(json_blocks)} JSON blocks, using the last one")
         
-        # Find ALL JSON blocks and get the last one (final result)
-        json_blocks = re.findall(r'```json\s*([\s\S]*?)```', result_str)
-        
-        if json_blocks:
-            # Use the LAST JSON block (final result, not tool calls)
-            json_content = json_blocks[-1].strip()
-            print(f"Found {len(json_blocks)} JSON blocks, using the last one")
-            
-            try:
-                parsed_json = json.loads(json_content)
-                # Validate it's an array of anomalies, not a tool call
-                if isinstance(parsed_json, list) and len(parsed_json) > 0:
-                    json.dump(parsed_json, f, indent=2)
-                    print(f"Successfully saved {len(parsed_json)} anomaly explanations")
-                elif isinstance(parsed_json, dict) and "action" in parsed_json:
-                    print("Error: Got tool call format instead of results")
-                    f.write(result_str)
-                else:
-                    json.dump(parsed_json, f, indent=2)
-                    print("Saved JSON result")
-            except json.JSONDecodeError as e:
-                print(f"JSON decode error: {e}")
-                f.write(json_content)
-                print("Raw JSON content saved")
-        else:
-            # No JSON blocks found, save raw result
-            f.write(result_str)
-            print("No JSON blocks found, saved raw result")
-  
+        try:
+            parsed_json = json.loads(json_content)
+            # Validate it's an array of anomalies, not a tool call
+            if isinstance(parsed_json, list) and len(parsed_json) > 0:
+                json.dump(parsed_json, f, indent=2)
+                print(f"Successfully saved {len(parsed_json)} anomaly explanations")
+            elif isinstance(parsed_json, dict) and "action" in parsed_json:
+                print("Error: Got tool call format instead of results")
+                f.write(result_str)
+            else:
+                json.dump(parsed_json, f, indent=2)
+                print("Saved JSON result")
+        except json.JSONDecodeError as e:
+            print(f"JSON decode error: {e}")
+            f.write(json_content)
+            print("Raw JSON content saved")
+    else:
+        # No JSON blocks found, save raw result
+        f.write(result_str)
+        print("No JSON blocks found, saved raw result")
