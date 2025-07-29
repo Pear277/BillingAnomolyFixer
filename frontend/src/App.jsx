@@ -166,7 +166,15 @@ function App() {
                     
                     <div className="section">
                       <h4>Recommended Fix</h4>
-                      <p className="fix-text">{anomaly.fix}</p>
+                      <p className="fix-text">
+                        {anomaly.recommended_fix
+                          ? anomaly.recommended_fix
+                          : anomaly.fix
+                            ? isNaN(anomaly.fix)
+                              ? anomaly.fix
+                              : `Expected charges: ${anomaly.fix}`
+                            : 'No recommended fix available.'}
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -188,40 +196,40 @@ function App() {
               ).map((fix, index) => {
                 const isDeleting = deletingItems.has(`autofix-${index}`)
                 return (
-                  <div key={index} className="autofix-card">
-                    <div className="autofix-header">
-                      <h3>Customer {fix.account_number}</h3>
-                      <div className="header-right">
-                        <span className={`fix-badge ${fix.change_type.replace(/_/g, '-')}`}>
-                          {fix.change_type.replace(/_/g, ' ')}
-                        </span>
-                        <button 
-                          className="dismiss-btn" 
-                          onClick={() => deleteAutofix(index)}
-                          disabled={isDeleting}
-                        >
-                          {isDeleting ? 'Dismissing...' : 'Dismiss'}
-                        </button>
-                      </div>
+                  <div key={fix.id || index} className="autofix-card">
+                  <div className="autofix-header">
+                    <h3>Customer {fix.account_number}</h3>
+                    <div className="header-right">
+                    <span className={`fix-badge ${String(fix.change_type || '').replace(/_/g, '-')}`}>
+                      {(fix.change_type || '').replace(/_/g, ' ')}
+                    </span>
+                    <button 
+                      className="dismiss-btn" 
+                      onClick={() => deleteAutofix(fix.id ?? index)}
+                      disabled={isDeleting}
+                    >
+                      {isDeleting ? 'Dismissing...' : 'Dismiss'}
+                    </button>
                     </div>
+                  </div>
                   
                   <div className="autofix-content">
-                    <div className="section">
-                      <h4>Field: {fix.field}</h4>
-                      <div className="change-display">
-                        <div className="before">
-                          <strong>Before:</strong> {fix.original_value}
-                        </div>
-                        <div className="arrow">→</div>
-                        <div className="after">
-                          <strong>After:</strong> {fix.fixed_value}
-                        </div>
-                      </div>
+                  <div className="section">
+                    <h4>Field: {fix.field || 'N/A'}</h4>
+                    <div className="change-display">
+                    <div className="before">
+                      <strong>Before:</strong> {fix.original_value ?? 'N/A'}
                     </div>
-                    
-                    <div className="timestamp">
-                      Fixed on: {new Date(fix.timestamp).toLocaleString()}
+                    <div className="arrow">→</div>
+                    <div className="after">
+                      <strong>After:</strong> {fix.fixed_value ?? 'N/A'}
                     </div>
+                    </div>
+                  </div>
+                  
+                  <div className="timestamp">
+                    Fixed on: {fix.timestamp ? new Date(fix.timestamp).toLocaleString() : 'N/A'}
+                  </div>
                   </div>
                 </div>
                 )

@@ -3,36 +3,36 @@
     "account_number": "CUST0004",
     "issue": "Charge mismatch",
     "explanation": "The billing system incorrectly calculated the charges for CUST0004 on 03-01-2022, resulting in a charge of \u00a31377.42 when it should have been \u00a3573.19.",
-    "fix": "Review and correct the billing algorithm to ensure accurate calculation based on usage data."
+    "fix": "Review the billing rules and logic to ensure accurate calculation. Adjust the charges for this account to the expected amount of \u00a3573.19."
   },
   {
     "account_number": "CUST0006",
     "issue": "Charge mismatch",
     "explanation": "The billing system incorrectly calculated the charges for CUST0006 on 03-07-2019, resulting in a charge of \u00a3438.87 when it should have been \u00a3488.98.",
-    "fix": "Review and correct the billing algorithm to ensure accurate calculation based on usage data."
+    "fix": "Review the billing rules and logic to ensure accurate calculation. Adjust the charges for this account to the expected amount of \u00a3488.98."
   },
   {
     "account_number": "CUST0008",
     "issue": "Fresh/Waste water usage mismatch",
-    "explanation": "The fresh and waste water usage for CUST0008 on 02-07-2018 did not match the expected values, leading to an incorrect charge of \u00a3607.42.",
-    "fix": "Verify the meter readings and update the billing system to ensure accurate usage data is used."
+    "explanation": "The fresh and waste water usage data for CUST0008 on 02-07-2018 and 01-01-2019 do not match the expected values, indicating a potential error in data recording or processing.",
+    "fix": "Review the data entry process to ensure accurate recording of water usage. Investigate any discrepancies and correct them as necessary."
   },
   {
     "account_number": "CUST0008",
     "issue": "Fresh/Waste water usage mismatch",
-    "explanation": "The fresh and waste water usage for CUST0008 on 01-01-2019 did not match the expected values, leading to an incorrect charge of \u00a3548.81.",
-    "fix": "Verify the meter readings and update the billing system to ensure accurate usage data is used."
+    "explanation": "The fresh and waste water usage data for CUST0008 on 02-07-2018 and 01-01-2019 do not match the expected values, indicating a potential error in data recording or processing.",
+    "fix": "Review the data entry process to ensure accurate recording of water usage. Investigate any discrepancies and correct them as necessary."
   },
   {
     "account_number": "CUST0004",
-    "issue": "Spike high",
-    "explanation": "The latest bill for CUST0004 on 03-01-2022 showed a significant increase in charges, indicating a potential anomaly.",
-    "fix": "Investigate the cause of the spike and update the billing system to prevent similar anomalies."
+    "issue": "ML anomaly detected - Spike high",
+    "explanation": "The billing system flagged a potential anomaly on 03-01-2022 for CUST0004, indicating unusually high charges of \u00a31377.42 compared to the expected amount of \u00a3573.19.",
+    "fix": "Investigate the cause of the spike in charges. Review billing rules and logic to ensure accurate calculation. Adjust the charges if necessary."
   },
   {
     "account_number": "CUST0009",
-    "issue": "Spike low",
-    "explanation": "The latest bill for CUST0009 on 03-07-2020 showed a significant decrease in charges, indicating a potential anomaly.",
-    "fix": "Investigate the cause of the spike and update the billing system to prevent similar anomalies."
+    "issue": "ML anomaly detected - Spike low",
+    "explanation": "The billing system flagged a potential anomaly on 03-07-2020 for CUST0009, indicating unusually low charges of \u00a3380.71 compared to the expected amount.",
+    "fix": "Investigate the cause of the low charges. Review billing rules and logic to ensure accurate calculation. Adjust the charges if necessary."
   }
 ]
