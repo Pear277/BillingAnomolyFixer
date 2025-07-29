@@ -28,11 +28,5 @@
     "issue": "ML anomaly detected - Spike high",
     "explanation": "The billing system flagged a potential anomaly on 03-01-2022 for CUST0004, indicating unusually high charges of \u00a31377.42 compared to the expected amount of \u00a3573.19.",
     "fix": "Investigate the cause of the spike in charges. Review billing rules and logic to ensure accurate calculation. Adjust the charges if necessary."
-  },
-  {
-    "account_number": "CUST0009",
-    "issue": "ML anomaly detected - Spike low",
-    "explanation": "The billing system flagged a potential anomaly on 03-07-2020 for CUST0009, indicating unusually low charges of \u00a3380.71 compared to the expected amount.",
-    "fix": "Investigate the cause of the low charges. Review billing rules and logic to ensure accurate calculation. Adjust the charges if necessary."
   }
 ]

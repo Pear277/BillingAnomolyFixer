@@ -1,6 +1,11 @@
 import { useState, useEffect } from 'react'
 import './App.css'
 
+const extractBillingDate = (text) => {
+  const match = text.match(/\d{2}-\d{2}-\d{4}/)
+  return match ? ` • ${match[0]}` : ''
+}
+
 function App() {
   const [anomalies, setAnomalies] = useState([])
   const [autofixes, setAutofixes] = useState([])
@@ -9,6 +14,8 @@ function App() {
   const [activeTab, setActiveTab] = useState('anomalies')
   const [deletingItems, setDeletingItems] = useState(new Set())
   const [customerFilter, setCustomerFilter] = useState('')
+  const [customerList, setCustomerList] = useState([])
+
 
   useEffect(() => {
     fetchData()
@@ -32,6 +39,10 @@ function App() {
       
       setAnomalies(anomaliesData || [])
       setAutofixes(autofixesData || [])
+
+      const uniqueCustomers = [...new Set(anomaliesData.map(a => a.account_number))].sort()
+      setCustomerList(uniqueCustomers)
+
     } catch (err) {
       setError(err.message)
     } finally {
@@ -104,13 +115,18 @@ function App() {
       </header>
 
       <div className="filter-section">
-        <input 
-          type="text" 
-          placeholder="Filter by customer (e.g. CUST0004)" 
-          value={customerFilter}
-          onChange={(e) => setCustomerFilter(e.target.value)}
-          className="customer-filter"
-        />
+        <select
+        className="customer-filter"
+        value={customerFilter}
+        onChange={(e) => setCustomerFilter(e.target.value)}
+      >
+        <option value="">All Customers</option>
+        {customerList.map(customer => (
+          <option key={customer} value={customer}>
+            {customer}
+          </option>
+        ))}
+      </select>
       </div>
 
       <nav className="tabs">
@@ -143,7 +159,10 @@ function App() {
                 return (
                   <div key={index} className="anomaly-card">
                     <div className="anomaly-header">
-                      <h3>Customer {anomaly.account_number}</h3>
+                      <h3>
+                        Customer {anomaly.account_number}
+                        <span className="billing-date">{extractBillingDate(anomaly.explanation)}</span>
+                      </h3>
                       <div className="header-right">
                         <span className={`issue-badge ${anomaly.issue.toLowerCase().replace(/\s+/g, '-')}`}>
                           {anomaly.issue}

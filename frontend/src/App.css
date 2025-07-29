@@ -36,6 +36,12 @@ body {
   opacity: 0.9;
 }
 
+.billing-date {
+  font-size: 0.9rem;
+  color: #6b7280;
+  margin-left: 8px;
+}
+
 .loading, .error, .no-data {
   text-align: center;
   padding: 60px 20px;
@@ -152,6 +158,8 @@ body {
   font-size: 1rem;
   width: 300px;
   transition: border-color 0.2s;
+  background-color: white; 
+  color: #333; 
 }
 
 .customer-filter:focus {
