@@ -1,5 +1,5 @@
 from crewai import Crew, Task, Agent
-from agents.agents import auto_fix_agent, investigator_agent, llm, get_rag_tool
+from agents.agents import auto_fix_agent, investigator_agent, llm
 from tools.anomaly_reader_tool import read_anomalies
 import json
 
@@ -63,7 +63,7 @@ if __name__ == "__main__":
         "with simple string queries like 'CUST0004 billing history' to get customer data, "
         "then analyze and provide clear explanations and fixes."
     ),
-    tools=[get_rag_tool()],
+    tools=[],
     llm=llm,
     allow_delegation=False,
     verbose=True,
@@ -71,7 +71,7 @@ if __name__ == "__main__":
 )
 
     # Create task with proper format
-    explainer_task = Task(
+    '''explainer_task = Task(
         agent=explainer_agent,
         description=f"""
     Analyze these billing anomalies and create explanations:
@@ -110,10 +110,83 @@ if __name__ == "__main__":
             verbose=True
         )
         
-    result = explainer_crew.kickoff()
+    result = explainer_crew.kickoff()'''
+
+    import re
+import json
+
+anomalies = []
+
+# For each anomaly, run the Crew agent and collect output
+for anomaly in first_10_anomalies:
+    task = Task(
+        agent=explainer_agent,
+        description=f"""
+        Analyze this billing anomaly and create an explanation:
+
+        {json.dumps(anomaly, indent=2)}
+
+        Steps:
+        1. Use historical patterns from billing data to infer cause
+        2. Analyze the anomaly
+        3. If ML anomaly, determine if it's 'Spike high' or 'Spike low'
+        4. Create a concise explanation and a specific fix
+
+         Keep the output focused and succinct—aim for clarity and brevity in both explanation and fix.
+
+        Return ONLY the following JSON format:
+        ```json
+        [
+          {{
+            "account_number": "{anomaly['account_number']}",
+            "issue": "...",
+            "explanation": "...",
+            "fix": "..."
+          }}
+        ]
+        ```
+        """,
+        expected_output="One anomaly explanation in JSON"
+    )
+
+    crew = Crew(
+        tasks=[task],
+        agents=[explainer_agent],
+        verbose=True
+    )
+
+    result = crew.kickoff()
+    result_str = str(result)
+
+    print(f"\n🧪 Agent Output for {anomaly['account_number']}:\n{result_str}")
+
+    # Try to extract JSON from markdown block
+    json_blocks = re.findall(r'```json\s*([\s\S]*?)```', result_str)
+
+    # Fallback to raw braces if fenced block missing
+    if not json_blocks:
+        json_blocks = re.findall(r'{[\s\S]*?}', result_str)
+
+    for jb in json_blocks:
+        try:
+            parsed = json.loads(jb.strip())
+            if isinstance(parsed, list):
+                anomalies.extend(parsed)
+            elif isinstance(parsed, dict):
+                anomalies.append(parsed)
+        except json.JSONDecodeError as e:
+            print(f"❌ JSON Decode Error for {anomaly['account_number']}: {e}")
+            continue
+
+# Save all valid explanations
+with open("backend/data/anomaly_explanations.json", "w") as f:
+    json.dump(anomalies, f, indent=2)
+    print(f"\n✅ Saved {len(anomalies)} anomaly explanations")
+
+
 
     # Save explainer output to file
-    import re
+    '''import re
 
     with open("backend/data/anomaly_explanations.json", "w") as f:
         result_str = str(result)
@@ -146,4 +219,4 @@ if __name__ == "__main__":
         else:
             # No JSON blocks found, save raw result
             f.write(result_str)
-            print("No JSON blocks found, saved raw result")
+            print("No JSON blocks found, saved raw result")'''

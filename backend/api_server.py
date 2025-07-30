@@ -30,12 +30,13 @@ async def get_anomalies():
         if isinstance(data, list):
             transformed = []
             for item in data:
-                transformed.append({
-                    "account_number": item.get("account_number", ""),
+                transformed.append({ 
+                    "account_number": str(item.get("account_number", "")),
                     "issue": "Billing Anomaly",
-                    "explanation": item.get("explanation", item.get("reason", "")),
-                    "fix": item.get("suggested_fix", item.get("fix", ""))
-                })
+                    "explanation": str(item.get("explanation") or item.get("reason") or "Unknown"),
+                    "fix": str(item.get("suggested_fix") or item.get("fix") or "No fix provided")
+                
+ })
             return transformed
         else:
             return []
