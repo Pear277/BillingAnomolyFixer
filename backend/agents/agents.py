@@ -5,7 +5,6 @@ from crewai import LLM
 import os
 from dotenv import load_dotenv
 from crewai_tools import RagTool
-from embedchain.config import AppConfig
 
 config = {
     "embedding_model": {
@@ -34,7 +33,6 @@ def get_rag_tool():
     global _rag_tool_instance
     if _rag_tool_instance is None:
         _rag_tool_instance = RagTool(config=config)
-        _rag_tool_instance.add("backend/data/first_10_customers.csv", data_type="csv")
     return _rag_tool_instance
 
 """"
