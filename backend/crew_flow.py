@@ -1,5 +1,5 @@
 from crewai import Crew, Task, Agent
-from agents.agents import auto_fix_agent, investigator_agent, llm, get_rag_tool
+from agents.agents import auto_fix_agent, investigator_agent, llm, get_rag_tool, groq_llm
 from tools.anomaly_reader_tool import read_anomalies
 import json
 import re
@@ -36,7 +36,7 @@ backstory=(
     "then analyze and provide clear explanations and fixes."
 ),
 tools=[get_rag_tool()],
-llm=llm,
+llm=groq_llm,
 allow_delegation=False,
 verbose=True,
 max_iter=3
@@ -78,17 +78,19 @@ if __name__ == "__main__":
     [
     {{
         "account_number": "CUST0004",
-        "issue": "Charge mismatch",
+        "issue": "Charge mismatch on 03-01-2022",
         "explanation": "Clear description of the problem",
         "fix": "Specific actionable fix"
     }}
     ]
 
+    Include relevant numbers in the explanation and fix.
+
     For ML anomalies:
     - If charges/usage unusually HIGH: issue = "Spike high"  
     - If charges/usage unusually LOW: issue = "Spike low"
 
-    Return ONLY the JSON array.
+    Return ONLY the JSON array. No explanations or instructions.
     """,
         expected_output=f"JSON array with {len(first_10_anomalies)} anomaly explanations"
     )

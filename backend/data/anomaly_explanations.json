@@ -1,0 +1,38 @@
+[
+{
+    "account_number": "CUST0004",
+    "issue": "Charge mismatch on 03-01-2022",
+    "explanation": "The latest charges for CUST0004 on 03-01-2022 are 1377.42, but the expected charges are 573.19. This indicates a charge mismatch, possibly due to incorrect billing calculations or missing discounts.",
+    "fix": "Review the billing calculations and ensure all applicable discounts are applied. Adjust the charges to reflect the expected amount of 573.19."
+},
+{
+    "account_number": "CUST0006",
+    "issue": "Charge mismatch on 03-07-2019",
+    "explanation": "The latest charges for CUST0006 on 03-07-2019 are 438.87, but the expected charges are 488.98. This indicates a charge mismatch, possibly due to incorrect billing calculations or missing charges.",
+    "fix": "Review the billing calculations and ensure all applicable charges are included. Adjust the charges to reflect the expected amount of 488.98."
+},
+{
+    "account_number": "CUST0008",
+    "issue": "Fresh/Waste water usage mismatch on 02-07-2018",
+    "explanation": "The fresh water usage for CUST0008 on 02-07-2018 is 126, but the waste water usage is 130. This indicates a mismatch between the two types of water usage, possibly due to incorrect meter readings or leaks.",
+    "fix": "Investigate the cause of the mismatch and adjust the usage records accordingly. Check for any leaks or incorrect meter readings and update the records to reflect the correct usage."
+},
+{
+    "account_number": "CUST0008",
+    "issue": "Fresh/Waste water usage mismatch on 01-01-2019",
+    "explanation": "The fresh water usage for CUST0008 on 01-01-2019 is 111, but the waste water usage is 116. This indicates a mismatch between the two types of water usage, possibly due to incorrect meter readings or leaks.",
+    "fix": "Investigate the cause of the mismatch and adjust the usage records accordingly. Check for any leaks or incorrect meter readings and update the records to reflect the correct usage."
+},
+{
+    "account_number": "CUST0004",
+    "issue": "Spike high on 03-01-2022",
+    "explanation": "The latest charges for CUST0004 on 03-01-2022 are 1377.42, which is unusually high compared to the expected charges. This indicates a potential spike in usage or charges.",
+    "fix": "Investigate the cause of the spike and adjust the charges or usage records accordingly. Check for any anomalies in usage patterns or billing calculations and update the records to reflect the correct charges."
+},
+{
+    "account_number": "CUST0009",
+    "issue": "Spike low on 03-07-2020",
+    "explanation": "The latest charges for CUST0009 on 03-07-2020 are 380.71, which is unusually low compared to the expected charges. This indicates a potential spike in usage or charges.",
+    "fix": "Investigate the cause of the spike and adjust the charges or usage records accordingly. Check for any anomalies in usage patterns or billing calculations and update the records to reflect the correct charges."
+}
+]
