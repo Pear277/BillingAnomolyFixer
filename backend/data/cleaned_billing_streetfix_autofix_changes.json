@@ -1,47 +1,20 @@
 [
   {
-    "account_number": "CUST0005",
-    "bill_date": "2019/01/01",
+    "account_number": "CUST0006",
+    "bill_date": "2020/07/03",
     "change_type": "date_format_year_first",
     "field": "bill_date",
-    "original_value": "2019/01/01",
-    "fixed_value": "01-01-2019",
-    "timestamp": "2025-08-01T12:18:15.245186"
-  },
-  {
-    "account_number": "CUST0007",
-    "bill_date": "2019/01/01",
-    "change_type": "date_format_year_first",
-    "field": "bill_date",
-    "original_value": "2019/01/01",
-    "fixed_value": "01-01-2019",
-    "timestamp": "2025-08-01T12:18:15.247186"
-  },
-  {
-    "account_number": "CUST0009",
-    "bill_date": "2019/01/01",
-    "change_type": "date_format_year_first",
-    "field": "bill_date",
-    "original_value": "2019/01/01",
-    "fixed_value": "01-01-2019",
-    "timestamp": "2025-08-01T12:18:15.262954"
+    "original_value": "2020/07/03",
+    "fixed_value": "07-03-2020",
+    "timestamp": "2025-08-01T13:39:33.375581"
   },
   {
     "account_number": "CUST0004",
-    "bill_date": "02-01-2021",
+    "bill_date": "01-01-2019",
     "change_type": "address_spelling_correction",
     "field": "address",
     "original_value": "62 Hihg Street",
     "fixed_value": "62 High Street",
-    "timestamp": "2025-08-01T12:21:36.476337"
-  },
-  {
-    "account_number": "CUST0005",
-    "bill_date": "03-07-2019",
-    "change_type": "address_spelling_correction",
-    "field": "address",
-    "original_value": "17 Marekt Square",
-    "fixed_value": "17 Market Square",
-    "timestamp": "2025-08-01T12:21:36.476337"
+    "timestamp": "2025-08-01T13:42:49.513945"
   }
 ]

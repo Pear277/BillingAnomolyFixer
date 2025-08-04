@@ -1,11 +1,25 @@
 [
   {
+    "account_number": "CUST0002",
+    "bill_date": "01-01-2019",
+    "address": "8 Market Square, Witney, OX28 6BB",
+    "fresh_water_usage": 180,
+    "waste_water_usage": 180,
+    "latest_charges": 817.4,
+    "issues": [
+      "Charge mismatch"
+    ],
+    "corrections": {
+      "expected_charges": 817.8
+    }
+  },
+  {
     "account_number": "CUST0004",
     "bill_date": "03-01-2022",
     "address": "62 High Street, Leighton Buzzard, LU7 1EA",
     "fresh_water_usage": 119,
     "waste_water_usage": 119,
-    "latest_charges": 1377.42,
+    "latest_charges": 577.19,
     "issues": [
       "Charge mismatch"
     ],
@@ -14,50 +28,12 @@
     }
   },
   {
-    "account_number": "CUST0006",
-    "bill_date": "03-07-2019",
-    "address": "12 Commercial Road, Swindon, SN1 5NX",
-    "fresh_water_usage": 98,
-    "waste_water_usage": 98,
-    "latest_charges": 438.87,
-    "issues": [
-      "Charge mismatch"
-    ],
-    "corrections": {
-      "expected_charges": 488.98
-    }
-  },
-  {
     "account_number": "CUST0008",
-    "bill_date": "02-07-2018",
+    "bill_date": "02-01-2020",
     "address": "30 High Street, High Wycombe, HP11 2AZ",
-    "fresh_water_usage": 126,
-    "waste_water_usage": 130,
-    "latest_charges": 607.42,
-    "issues": [
-      "Fresh/Waste water usage mismatch"
-    ],
-    "corrections": {}
-  },
-  {
-    "account_number": "CUST0008",
-    "bill_date": "01-01-2019",
-    "address": "30 High Street, High Wycombe, HP11 2AZ",
-    "fresh_water_usage": 111,
-    "waste_water_usage": 116,
-    "latest_charges": 548.81,
-    "issues": [
-      "Fresh/Waste water usage mismatch"
-    ],
-    "corrections": {}
-  },
-  {
-    "account_number": "CUST0004",
-    "bill_date": "03-01-2022",
-    "address": "62 High Street, Leighton Buzzard, LU7 1EA",
-    "fresh_water_usage": 119,
-    "waste_water_usage": 119,
-    "latest_charges": 1377.42,
+    "fresh_water_usage": 84,
+    "waste_water_usage": 84,
+    "latest_charges": 432.84,
     "issues": [
       "ML anomaly detected"
     ],
