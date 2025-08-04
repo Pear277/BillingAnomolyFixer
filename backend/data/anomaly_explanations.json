@@ -1,26 +1,26 @@
 [
-    {
-        "account_number": "CUST0002",
-        "issue": "Charge mismatch on 01-01-2019",
-        "explanation": "The latest charges of 817.4 do not match the expected charges of 817.8, indicating a charge mismatch.",
-        "fix": "Update the latest charges to 817.8 to resolve the charge mismatch."
-    },
-    {
-        "account_number": "CUST0004",
-        "issue": "Charge mismatch on 03-01-2022",
-        "explanation": "The latest charges of 577.19 do not match the expected charges of 573.19, indicating a charge mismatch.",
-        "fix": "Update the latest charges to 573.19 to resolve the charge mismatch."
-    },
-    {
-        "account_number": "CUST0008",
-        "issue": "Spike high on 02-01-2020",
-        "explanation": "The fresh water usage and waste water usage of 84 are unusually low compared to the latest charges of 432.84, indicating a spike high.",
-        "fix": "Investigate and adjust the usage records to reflect the actual usage, and recalculate the latest charges accordingly."
-    },
-    {
-        "account_number": "CUST0009",
-        "issue": "Spike low on 03-07-2020",
-        "explanation": "The fresh water usage and waste water usage of 250 are unusually high compared to the average usage, but the latest charges of 1098.5 are not unusually high, however the issue is still 'Spike low' as per the given data and the definition of the issue, indicating a spike low.",
-        "fix": "Investigate and adjust the usage records to reflect the actual usage, and recalculate the latest charges accordingly."
-    }
+  {
+    "account_number": "CUST0002",
+    "issue": "Charge mismatch on 01-01-2019",
+    "explanation": "The charge mismatch is due to the difference between the latest charges (817.4) and the expected charges (817.8) for account CUST0002, resulting in an error of 0.4",
+    "fix": "Update the latest charges to 817.8 to resolve the charge mismatch"
+  },
+  {
+    "account_number": "CUST0004",
+    "issue": "Charge mismatch on 03-01-2022",
+    "explanation": "The charge mismatch is due to the difference between the latest charges (577.19) and the expected charges (573.19) for account CUST0004, resulting in an error of 4.0",
+    "fix": "Update the latest charges to 573.19 to resolve the charge mismatch"
+  },
+  {
+    "account_number": "CUST0008",
+    "issue": "Spike high on 02-01-2020",
+    "explanation": "The ML anomaly detected for account CUST0008 on 02-01-2020 is due to unusually high charges (432.84) compared to the average usage, indicating a possible error in the billing process",
+    "fix": "Investigate the billing process for account CUST0008 and adjust the charges accordingly to prevent future anomalies"
+  },
+  {
+    "account_number": "CUST0009",
+    "issue": "Spike low on 03-07-2020",
+    "explanation": "The ML anomaly detected for account CUST0009 on 03-07-2020 is due to unusually low charges (380.71) compared to the average usage, indicating a possible error in the billing process",
+    "fix": "Investigate the billing process for account CUST0009 and adjust the charges accordingly to prevent future anomalies"
+  }
 ]

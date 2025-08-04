@@ -25,6 +25,7 @@ venv/
 env/
 ENV/
 ourenv/
+nenv/
 
 # IDE
 .vscode/
