@@ -56,17 +56,14 @@ if __name__ == "__main__":
     # Load anomaly data and filter for first 10 customers only
     with open("backend/data/combined_anomalies.json") as f:
         all_anomalies = json.load(f)
-    
-    # Filter for only CUST0001 to CUST0010
-    first_10_customers = [f"CUST{i:04d}" for i in range(1, 11)]
-    first_10_anomalies = [a for a in all_anomalies if a["account_number"] in first_10_customers]
+
     
     explainer_task = Task(
     agent=explainer_agent,
     description=f"""
     Analyze these billing anomalies and create explanations:
 
-    {json.dumps(first_10_anomalies, indent=2)}
+    {json.dumps(all_anomalies, indent=2)}
 
     For each anomaly:
     1. Query RAG tool with simple string like "CUST0004 billing history"
@@ -84,27 +81,26 @@ if __name__ == "__main__":
     }}
     ]
 
-    Include relevant numbers in the explanation and fix.
+    Include relevant numbers in the explanation and fix. Ensure inclusion of billing date and charge details.
 
     For ML anomalies:
     - If charges/usage unusually HIGH: issue = "Spike high"  
     - If charges/usage unusually LOW: issue = "Spike low"
 
-    Return ONLY the JSON array. No explanations or instructions.
+    Return ONLY the JSON array. No explanations or instructions.No think section in the output JSON.
     """,
-        expected_output=f"JSON array with {len(first_10_anomalies)} anomaly explanations"
+        expected_output=f"JSON array with {len(all_anomalies)} anomaly explanations"
     )
 
 
-    print(f"Found {len(first_10_anomalies)} anomalies for first 10 customers")
-    for anomaly in first_10_anomalies:
+    print(f"Found {len(all_anomalies)} anomalies for first 10 customers")
+    for anomaly in all_anomalies:
         print(f"- {anomaly['account_number']}: {anomaly['issues']}")
     
     billing_df = pd.read_csv("backend/data/cleaned_billing_streetfix.csv")
-    filtered_df = billing_df[billing_df['account_number'].isin(first_10_customers)]
-    filtered_df.to_csv("backend/data/first_10_customers.csv", index=False)
+    filtered_df = billing_df[billing_df['account_number'].isin(all_anomalies)]
+    filtered_df.to_csv("backend/data/all_anomalies.csv", index=False)
     
-    anomalies_str = json.dumps(first_10_anomalies, indent=2)
     
     explainer_crew = Crew(
         tasks=[explainer_task],
@@ -128,7 +124,8 @@ if __name__ == "__main__":
             try:
                 parsed_json = json.loads(json_content)
                 if isinstance(parsed_json, list) and len(parsed_json) > 0:
-                    json.dump(parsed_json, f, indent=2)
+                    with open("backend/data/anomaly_explanations.json", "w") as f:
+                        json.dump(parsed_json, f, indent=2)
                     print(f"Successfully saved {len(parsed_json)} anomaly explanations")
                 else:
                     json.dump(parsed_json, f, indent=2)
@@ -139,4 +136,4 @@ if __name__ == "__main__":
                 print("Raw JSON content saved")
         else:
             f.write(result_str)
-            print("No JSON blocks found, saved raw result")
+            print("No JSON blocks found, saved raw result") 

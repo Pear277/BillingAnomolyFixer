@@ -21,5 +21,5 @@ config = {
 }
 
 rag_tool = RagTool(config=config)
-rag_tool.add("backend/data/first_10_customers.csv", data_type="csv")
+rag_tool.add("backend/data/all_anomalies.csv", data_type="csv")
 print("Saved embeddings!")
