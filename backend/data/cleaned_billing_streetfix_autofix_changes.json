@@ -6,7 +6,25 @@
     "field": "bill_date",
     "original_value": "2020/07/03",
     "fixed_value": "07-03-2020",
-    "timestamp": "2025-08-01T13:39:33.375581"
+    "timestamp": "2025-08-04T14:43:02.377286"
+  },
+  {
+    "account_number": "CUST0027",
+    "bill_date": "2020/02/01",
+    "change_type": "date_format_year_first",
+    "field": "bill_date",
+    "original_value": "2020/02/01",
+    "fixed_value": "02-01-2020",
+    "timestamp": "2025-08-04T14:43:02.446916"
+  },
+  {
+    "account_number": "CUST0059",
+    "bill_date": "2019/03/07",
+    "change_type": "date_format_year_first",
+    "field": "bill_date",
+    "original_value": "2019/03/07",
+    "fixed_value": "03-07-2019",
+    "timestamp": "2025-08-04T14:43:02.544138"
   },
   {
     "account_number": "CUST0004",
@@ -15,6 +33,15 @@
     "field": "address",
     "original_value": "62 Hihg Street",
     "fixed_value": "62 High Street",
-    "timestamp": "2025-08-01T13:42:49.513945"
+    "timestamp": "2025-08-04T14:43:37.601201"
+  },
+  {
+    "account_number": "CUST0093",
+    "bill_date": "03-07-2019",
+    "change_type": "address_spelling_correction",
+    "field": "address",
+    "original_value": "33 Nroth Street",
+    "fixed_value": "33 North Street",
+    "timestamp": "2025-08-04T14:43:37.601201"
   }
 ]

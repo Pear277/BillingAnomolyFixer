@@ -64,9 +64,6 @@ class BillingDataFixer:
     def run(self, billing_path: str,reference_folder: str, output_path: str) -> str:
         df = pd.read_csv(billing_path)
         
-        # Filter to first 10 customers only
-        first_10_customers = [f'CUST{i:04d}' for i in range(1, 11)]
-        df = df[df['account_number'].isin(first_10_customers)]
 
         # Clean strings
         df = df.drop_duplicates()

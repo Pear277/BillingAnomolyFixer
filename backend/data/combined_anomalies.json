@@ -1,43 +1,43 @@
 [
   {
-    "account_number": "CUST0002",
+    "account_number": "CUST0015",
     "bill_date": "01-01-2019",
-    "address": "8 Market Square, Witney, OX28 6BB",
-    "fresh_water_usage": 180,
-    "waste_water_usage": 180,
-    "latest_charges": 817.4,
+    "address": "62 South Street, Worthing, BN11 3AA",
+    "fresh_water_usage": 25,
+    "waste_water_usage": 25,
+    "latest_charges": 157.75,
     "issues": [
       "Charge mismatch"
     ],
     "corrections": {
-      "expected_charges": 817.8
+      "expected_charges": 196.25
     }
   },
   {
-    "account_number": "CUST0004",
-    "bill_date": "03-01-2022",
-    "address": "62 High Street, Leighton Buzzard, LU7 1EA",
-    "fresh_water_usage": 119,
-    "waste_water_usage": 119,
-    "latest_charges": 577.19,
+    "account_number": "CUST0034",
+    "bill_date": "03-07-2019",
+    "address": "52 Cornmarket Street, Oxford, OX1 3HA",
+    "fresh_water_usage": 127,
+    "waste_water_usage": 131,
+    "latest_charges": 611.43,
     "issues": [
-      "Charge mismatch"
-    ],
-    "corrections": {
-      "expected_charges": 573.19
-    }
-  },
-  {
-    "account_number": "CUST0008",
-    "bill_date": "02-01-2020",
-    "address": "30 High Street, High Wycombe, HP11 2AZ",
-    "fresh_water_usage": 84,
-    "waste_water_usage": 84,
-    "latest_charges": 432.84,
-    "issues": [
-      "ML anomaly detected"
+      "Fresh/Waste water usage mismatch"
     ],
     "corrections": {}
+  },
+  {
+    "account_number": "CUST0088",
+    "bill_date": "03-01-2022",
+    "address": "67 Commercial Road, Swindon, SN1 5NX",
+    "fresh_water_usage": 122,
+    "waste_water_usage": 122,
+    "latest_charges": 1585.22,
+    "issues": [
+      "Charge mismatch"
+    ],
+    "corrections": {
+      "expected_charges": 585.22
+    }
   },
   {
     "account_number": "CUST0009",
@@ -46,6 +46,78 @@
     "fresh_water_usage": 250,
     "waste_water_usage": 250,
     "latest_charges": 1098.5,
+    "issues": [
+      "ML anomaly detected"
+    ],
+    "corrections": {}
+  },
+  {
+    "account_number": "CUST0017",
+    "bill_date": "03-07-2019",
+    "address": "26 Hart Street, Henley-on-Thames, RG9 2AR",
+    "fresh_water_usage": 134,
+    "waste_water_usage": 134,
+    "latest_charges": 633.34,
+    "issues": [
+      "ML anomaly detected"
+    ],
+    "corrections": {}
+  },
+  {
+    "account_number": "CUST0018",
+    "bill_date": "04-07-2021",
+    "address": "41 Queen Street, Bicester, OX26 2NY",
+    "fresh_water_usage": 131,
+    "waste_water_usage": 131,
+    "latest_charges": 621.31,
+    "issues": [
+      "ML anomaly detected"
+    ],
+    "corrections": {}
+  },
+  {
+    "account_number": "CUST0020",
+    "bill_date": "03-07-2019",
+    "address": "5 Hart Street, Henley-on-Thames, RG9 2AR",
+    "fresh_water_usage": 78,
+    "waste_water_usage": 78,
+    "latest_charges": 408.78,
+    "issues": [
+      "ML anomaly detected"
+    ],
+    "corrections": {}
+  },
+  {
+    "account_number": "CUST0053",
+    "bill_date": "02-07-2018",
+    "address": "18 Westgate Street, Gloucester, GL1 2NW",
+    "fresh_water_usage": 79,
+    "waste_water_usage": 79,
+    "latest_charges": 412.79,
+    "issues": [
+      "ML anomaly detected"
+    ],
+    "corrections": {}
+  },
+  {
+    "account_number": "CUST0081",
+    "bill_date": "03-07-2020",
+    "address": "26 High Street, Kettering, NN16 8SP",
+    "fresh_water_usage": 113,
+    "waste_water_usage": 113,
+    "latest_charges": 549.13,
+    "issues": [
+      "ML anomaly detected"
+    ],
+    "corrections": {}
+  },
+  {
+    "account_number": "CUST0084",
+    "bill_date": "01-01-2019",
+    "address": "19 Broad Street, Reading, RG1 2BH",
+    "fresh_water_usage": 80,
+    "waste_water_usage": 80,
+    "latest_charges": 416.8,
     "issues": [
       "ML anomaly detected"
     ],

@@ -1,26 +1,62 @@
 [
-  {
-    "account_number": "CUST0002",
+{
+    "account_number": "CUST0015",
     "issue": "Charge mismatch on 01-01-2019",
-    "explanation": "The charge mismatch is due to the difference between the latest charges (817.4) and the expected charges (817.8) for account CUST0002, resulting in an error of 0.4",
-    "fix": "Update the latest charges to 817.8 to resolve the charge mismatch"
-  },
-  {
-    "account_number": "CUST0004",
+    "explanation": "The charge for fresh water and waste water usage (25 units each) was calculated as £157.75, while the expected charge is £196.25. This indicates a discrepancy in the calculation process.",
+    "fix": "Verify the tariff rates applied for fresh and waste water, and recalculate the charges based on the correct rate per unit."
+},
+{
+    "account_number": "CUST0034",
+    "issue": "Fresh/Waste water usage mismatch on 03-07-2019",
+    "explanation": "The fresh water usage (127 units) and waste water usage (131 units) are not matching, suggesting inaccurate measurement or recording of consumption.",
+    "fix": "Recheck the meter readings for both fresh and waste water. If readings are correct, investigate for possible leakage or cross-connection."
+},
+{
+    "account_number": "CUST0088",
     "issue": "Charge mismatch on 03-01-2022",
-    "explanation": "The charge mismatch is due to the difference between the latest charges (577.19) and the expected charges (573.19) for account CUST0004, resulting in an error of 4.0",
-    "fix": "Update the latest charges to 573.19 to resolve the charge mismatch"
-  },
-  {
-    "account_number": "CUST0008",
-    "issue": "Spike high on 02-01-2020",
-    "explanation": "The ML anomaly detected for account CUST0008 on 02-01-2020 is due to unusually high charges (432.84) compared to the average usage, indicating a possible error in the billing process",
-    "fix": "Investigate the billing process for account CUST0008 and adjust the charges accordingly to prevent future anomalies"
-  },
-  {
+    "explanation": "The charge for 122 units each of fresh and waste water usage was calculated as £1585.22, while the expected charge is £585.22. This discrepancy indicates an error in the billing system or rate application.",
+    "fix": "Investigate the billing system to identify the root cause. Recalculate the charges using the correct tariff rates and issue a corrected invoice."
+},
+{
     "account_number": "CUST0009",
-    "issue": "Spike low on 03-07-2020",
-    "explanation": "The ML anomaly detected for account CUST0009 on 03-07-2020 is due to unusually low charges (380.71) compared to the average usage, indicating a possible error in the billing process",
-    "fix": "Investigate the billing process for account CUST0009 and adjust the charges accordingly to prevent future anomalies"
-  }
+    "issue": "Spike high on 03-07-2020",
+    "explanation": "Usage of 250 units each for fresh and waste water resulted in charges of £1098.50, which is higher than the typical pattern for prior months.",
+    "fix": "Conduct a site visit to identify the reason for the spike. Investigate if it is due to increased usage or system malfunction."
+},
+{
+    "account_number": "CUST0017",
+    "issue": "Spike high on 03-07-2019",
+    "explanation": "Usage of 134 units each for fresh and waste water resulted in charges of £633.34, which is higher than historical patterns.",
+    "fix": "Verify the accuracy of usage readings. If confirmed, investigate for additional consumption sources or system errors."
+},
+{
+    "account_number": "CUST0018",
+    "issue": "Spike low on 04-07-2021",
+    "explanation": "Usage of 131 units each for fresh and waste water resulted in charges of £621.31, which is significantly lower than the normal usage pattern.",
+    "fix": "Investigate if there was a system error or if the customer had a temporary reduction in usage. Verify the data accuracy and provide a detailed explanation."
+},
+{
+    "account_number": "CUST0020",
+    "issue": "Spike low on 03-07-2019",
+    "explanation": "Usage of 78 units each for fresh and waste water resulted in charges of £408.78, which is unusually low compared to historical data.",
+    "fix": "Check for possible system errors in reading or billing. If readings are accurate, investigate if the customer had a reduction in consumption."
+},
+{
+    "account_number": "CUST0053",
+    "issue": "Spike low on 02-07-2018",
+    "explanation": "Usage of 79 units each for fresh and waste water resulted in charges of £412.79, which is significantly lower than the historical average.",
+    "fix": "Conduct a review of meter readings and billing calculations. Check if the customer had a temporary reduction in usage or if there was an error in measurement."
+},
+{
+    "account_number": "CUST0081",
+    "issue": "Spike high on 03-07-2020",
+    "explanation": "Usage of 113 units each for fresh and waste water resulted in charges of £549.13, which is unusually high compared to previous readings.",
+    "fix": "Investigate for potential system errors or additional consumption sources. Clarify with the customer about any increased water usage."
+},
+{
+    "account_number": "CUST0084",
+    "issue": "Spike high on 01-01-2019",
+    "explanation": "Usage of 80 units each for fresh and waste water resulted in charges of £416.80, which is significantly higher than historical data.",
+    "fix": "Verify the meter readings and billing records. If confirmed, determine if there was a temporary increase in consumption or a system error."
+}
 ]
