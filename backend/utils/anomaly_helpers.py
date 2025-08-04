@@ -100,7 +100,7 @@ def ml_based_check(csv_path: str) -> pd.DataFrame:
     df_all = pd.concat(all_scored_rows, ignore_index=True)
 
     # Decide threshold — e.g., 3% are anomalies
-    threshold = df_all['anomaly_score'].quantile(0.03)
+    threshold = df_all['anomaly_score'].quantile(0.02)
     df_all['anomaly_flag'] = (df_all['anomaly_score'] < threshold).astype(int)
     anomalies = df_all[df_all['anomaly_flag'] == 1]
 
