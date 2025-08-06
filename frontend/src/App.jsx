@@ -1,5 +1,9 @@
 import { useState, useEffect } from 'react'
 import './App.css'
+import { Auth } from '@supabase/auth-ui-react'
+import { ThemeSupa } from '@supabase/auth-ui-shared'
+import { supabase } from './supabase'
+
 
 const extractBillingDate = (text) => {
   const match = text.match(/\d{2}-\d{2}-\d{4}/)
@@ -7,6 +11,7 @@ const extractBillingDate = (text) => {
 }
 
 function App() {
+  const [session, setSession] = useState(null)
   const [anomalies, setAnomalies] = useState([])
   const [autofixes, setAutofixes] = useState([])
   const [loading, setLoading] = useState(true)
@@ -16,10 +21,25 @@ function App() {
   const [customerFilter, setCustomerFilter] = useState('')
   const [customerList, setCustomerList] = useState([])
 
+  useEffect(() => {
+      supabase.auth.getSession().then(({ data: { session } }) => {
+        setSession(session)
+      })
+
+      const {
+        data: {subscription },  
+      } = supabase.auth.onAuthStateChange((_event, session) => {
+        setSession(session)
+      })
+
+      return () => subscription.unsubscribe()
+    }, [])
 
   useEffect(() => {
-    fetchData()
-  }, [])
+    if (session) {
+      fetchData()
+    }
+  }, [session])
 
   const fetchData = async () => {
     try {
@@ -102,6 +122,43 @@ function App() {
     }
   }
 
+  if (!session) {
+      return (
+        <div className="app">
+        <header className="header">
+          <h1>Billing Data Analysis</h1>
+          <p>AI-powered analysis of billing discrepancies and auto-fixes</p>
+        </header>
+
+        <div style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          padding: '40px 20px'
+        }}>
+          <div style={{
+            maxWidth: '400px',
+            width: '100%',
+            padding: '2rem',
+            borderRadius: '8px'
+          }}>
+          <Auth supabaseClient={supabase} appearance={{
+          theme: ThemeSupa, 
+          variables: {
+            default: {
+              colors: {
+                brand: '#667eea',
+                brandAccent: '#845eb6ff',
+                inputBorder: '#d1d5db',
+                inputText: '#111827'
+              }
+          }
+        }}} providers={[]} />
+        </div>
+      </div>
+    </div>
+    )
+  }
 
 
   if (loading) return <div className="loading">Loading data...</div>
@@ -112,6 +169,7 @@ function App() {
       <header className="header">
         <h1>Billing Data Analysis</h1>
         <p>AI-powered analysis of billing discrepancies and auto-fixes</p>
+        <button onClick={() => supabase.auth.signOut()}>Logout</button>
       </header>
 
       <div className="filter-section">

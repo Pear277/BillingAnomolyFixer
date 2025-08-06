@@ -54,7 +54,9 @@ llm = LLM(
 llm = LLM(model="ollama/qwen2.5:7b", timeout=1200, temperature=0.1)
 
 groq_llm = ChatGroq(
-    model_name = "groq/qwen/qwen3-32b")
+    model_name="groq/qwen/qwen3-32b",
+    api_key=api_key
+)
 
 
 auto_fix_agent = Agent(
@@ -78,5 +80,3 @@ investigator_agent = Agent(
     verbose=True,
     max_iter=1
 )
-
-# explainer_agent will be created in crew_flow.py after cleaned file is ready
