@@ -53,7 +53,7 @@ if __name__ == "__main__":
     
     initial_result = initial_crew.kickoff()
     
-    # Load anomaly data and filter for first 10 customers only
+    # Load anomaly data
     with open("backend/data/combined_anomalies.json") as f:
         all_anomalies = json.load(f)
 
@@ -81,7 +81,9 @@ if __name__ == "__main__":
     }}
     ]
 
-    Include relevant numbers in the explanation and fix. Ensure inclusion of billing date and charge details.
+    Include relevant numbers in the explanation and fix. Include the billing date and charge details.
+    A spike high is when charges are unusually high compared to previous bills.
+    A spike low is when charges are unusually low compared to previous bills.
 
     For ML anomalies:
     - If charges/usage unusually HIGH: issue = "Spike high"  

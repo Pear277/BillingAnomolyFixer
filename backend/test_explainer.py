@@ -51,12 +51,14 @@ explainer_task = Task(
     }}
     ]
 
-    Include relevant numbers in the explanation and fix. Ensure inclusion of billing date and charge details.
-
-
-    For ML anomalies:
+    Include relevant numbers in the explanation and fix. Include the billing date and charge details.
+    
+    For each of the ML anomalies:
     - If charges/usage unusually HIGH: issue = "Spike high"  
     - If charges/usage unusually LOW: issue = "Spike low"
+
+    use the relevant RAG data to provide context for the anomaly.
+    If usage is low it is a LOW usage anomaly, if high it is a HIGH usage anomaly.
 
     Return ONLY the JSON array. No explanations or instructions.No think section in the output JSON.
     """,
